@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Actuals vs Budget Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        [v-cloak] { display: none; }
+        .modal-backdrop { background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen text-slate-900">
+
+<div id="app" class="p-4 md:p-8 max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+        <div>
+            <h1 class="text-2xl font-bold flex items-center gap-2">
+                <i data-lucide="bar-chart-3" class="text-blue-600"></i>
+                Financial Actuals vs Budget
+            </h1>
+            <p class="text-slate-500 mt-1 text-sm tracking-tight">Monitoring Actual Spend vs Planned & Target </p>
+        </div>
+        <button onclick="openModal('add')" class="flex items-center justify-center gap-2 bg-blue-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 active:scale-95">
+            <i data-lucide="plus" size="18"></i> Add Record
+        </button>
+    </div>
+
+    <!-- KPI Metrics -->
+    <div id="kpi-container" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <!-- Rendered via JS -->
+    </div>
+
+    <!-- Filters Panel -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm mb-6">
+        <div class="flex items-center gap-2 mb-5 text-slate-800 font-black text-xs uppercase tracking-widest">
+            <i data-lucide="filter" size="14" class="text-blue-600"></i>
+            Global Filters
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div class="relative">
+                <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size="14"></i>
+                <input type="text" id="filter-acc" oninput="updateFilters()" placeholder="Acc No..." class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+            </div>
+            <input type="text" id="filter-name" oninput="updateFilters()" placeholder="Account Name..." class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+            <input type="text" id="filter-desc" oninput="updateFilters()" placeholder="Description..." class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+            <input type="text" id="filter-detail" oninput="updateFilters()" placeholder="Details..." class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+            <div class="relative">
+                <select id="filter-month" onchange="updateFilters()" class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm appearance-none focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                    <option value="">All Months</option>
+                </select>
+                <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size="14"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Table -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-12">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200">
+                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Account Details</th>
+                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Item Description</th>
+                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Month</th>
+                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Targets / Plans</th>
+                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Actual Spend</th>
+                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Performance %</th>
+                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Status</th>
+                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center w-24">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body" class="divide-y divide-slate-100">
+                    <!-- Rendered via JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Form Modal -->
+    <div id="form-modal" class="fixed inset-0 modal-backdrop z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-xl overflow-hidden my-auto transform transition-all">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                <div>
+                    <h2 id="modal-title" class="text-xl font-black text-slate-900 flex items-center gap-2"></h2>
+                    <p class="text-xs text-slate-500 font-medium mt-0.5">Please fill in all details correctly.</p>
+                </div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-white transition-all">
+                    <i data-lucide="x" size="20"></i>
+                </button>
+            </div>
+            <form id="record-form" class="p-8" onsubmit="handleFormSubmit(event)">
+                <input type="hidden" id="item-id">
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="col-span-1">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-1 tracking-widest">Account Number</label>
+                        <input required id="form-acc" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm outline-none transition-all focus:ring-2 focus:ring-blue-500" placeholder="e.g. 1001">
+                    </div>
+                    <div class="col-span-1">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-1 tracking-widest">Account Name</label>
+                        <input required id="form-name" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm outline-none transition-all focus:ring-2 focus:ring-blue-500" placeholder="e.g. Marketing">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-1 tracking-widest">Description</label>
+                        <input required id="form-desc" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm outline-none transition-all focus:ring-2 focus:ring-blue-500" placeholder="e.g. Cloud Infrastructure">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-1 tracking-widest">Detailed Context</label>
+                        <textarea required id="form-detail" rows="2" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm outline-none transition-all focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-1 tracking-widest">Month</label>
+                        <select id="form-month" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                        </select>
+                    </div>
+                    <div class="col-span-1">
+                        <label class="block text-[10px] font-black text-emerald-600 uppercase mb-2 ml-1 tracking-widest">Target (R)</label>
+                        <input required type="number" step="0.01" id="form-target" class="w-full px-4 py-3 bg-emerald-50/30 border border-emerald-100 rounded-2xl text-sm outline-none font-bold">
+                    </div>
+                    <div class="col-span-1">
+                        <label class="block text-[10px] font-black text-amber-600 uppercase mb-2 ml-1 tracking-widest">Planned (R)</label>
+                        <input required type="number" step="0.01" id="form-planned" class="w-full px-4 py-3 bg-amber-50/30 border border-amber-100 rounded-2xl text-sm outline-none font-bold">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-[10px] font-black text-blue-600 uppercase mb-2 ml-1 tracking-widest">Actual (R)</label>
+                        <input required type="number" step="0.01" id="form-actual" class="w-full px-4 py-4 bg-blue-50/30 border border-blue-100 rounded-2xl text-lg outline-none font-black">
+                    </div>
+                </div>
+                <div class="flex gap-4 mt-8">
+                    <button type="button" onclick="closeModal()" class="flex-1 py-4 text-sm font-black text-slate-500 bg-slate-100 rounded-2xl hover:bg-slate-200">Discard</button>
+                    <button type="submit" class="flex-1 py-4 text-sm font-black bg-blue-600 text-white rounded-2xl hover:bg-blue-700 shadow-xl shadow-blue-200">Save Record</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="fixed inset-0 modal-backdrop z-[60] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm text-center">
+            <div class="w-12 h-12 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="trash-2" size="24"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">Delete Record?</h3>
+            <p class="text-sm text-slate-500 mt-2">This action cannot be undone. Are you sure you want to remove this entry?</p>
+            <div class="flex gap-3 mt-6">
+                <button onclick="closeDeleteModal()" class="flex-1 py-2.5 text-sm font-bold text-slate-500 bg-slate-50 rounded-xl">Cancel</button>
+                <button id="confirm-delete-btn" class="flex-1 py-2.5 text-sm font-bold bg-red-600 text-white rounded-xl shadow-lg shadow-red-100">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // State Management
+    let data = [
+        { id: 1, accountNo: "1001", accountName: "Marketing", itemDesc: "Digital Ads", itemDetail: "Google Search", month: "January", planned: 5000, actual: 4800, target: 4500 },
+        { id: 2, accountNo: "1001", accountName: "Marketing", itemDesc: "Digital Ads", itemDetail: "Social Media", month: "January", planned: 3000, actual: 3200, target: 3000 },
+        { id: 3, accountNo: "2002", accountName: "Operations", itemDesc: "Logistics", itemDetail: "Last Mile Delivery", month: "January", planned: 12000, actual: 11500, target: 11000 },
+        { id: 4, accountNo: "3003", accountName: "R&D", itemDesc: "Software Licenses", itemDetail: "Cloud Infrastructure", month: "February", planned: 8000, actual: 9500, target: 8500 },
+        { id: 5, accountNo: "1001", accountName: "Marketing", itemDesc: "Events", itemDetail: "Trade Show Q1", month: "February", planned: 15000, actual: 14200, target: 15000 },
+        { id: 6, accountNo: "2002", accountName: "Operations", itemDesc: "Maintenance", itemDetail: "Facility Repairs", month: "March", planned: 2000, actual: 2500, target: 2000 },
+    ];
+
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    let deleteId = null;
+
+    // Initialize Selects
+    function initSelects() {
+        const selects = ['filter-month', 'form-month'];
+        selects.forEach(id => {
+            const el = document.getElementById(id);
+            months.forEach(m => {
+                const opt = document.createElement('option');
+                opt.value = m;
+                opt.textContent = m;
+                el.appendChild(opt);
+            });
+        });
+    }
+
+    function formatCurrency(val) {
+        return new Intl.NumberFormat('en-ZA', { 
+            style: 'currency', 
+            currency: 'ZAR',
+            minimumFractionDigits: 0 
+        }).format(val).replace('ZAR', 'R');
+    }
+
+    function render() {
+        const filterAcc = document.getElementById('filter-acc').value.toLowerCase();
+        const filterName = document.getElementById('filter-name').value.toLowerCase();
+        const filterDesc = document.getElementById('filter-desc').value.toLowerCase();
+        const filterDetail = document.getElementById('filter-detail').value.toLowerCase();
+        const filterMonth = document.getElementById('filter-month').value;
+
+        const filtered = data.filter(item => 
+            item.accountNo.toLowerCase().includes(filterAcc) &&
+            item.accountName.toLowerCase().includes(filterName) &&
+            item.itemDesc.toLowerCase().includes(filterDesc) &&
+            item.itemDetail.toLowerCase().includes(filterDetail) &&
+            (filterMonth === '' || item.month === filterMonth)
+        );
+
+        // Calculate Totals
+        const totals = filtered.reduce((acc, curr) => ({
+            planned: acc.planned + curr.planned,
+            actual: acc.actual + curr.actual,
+            target: acc.target + curr.target
+        }), { planned: 0, actual: 0, target: 0 });
+
+        // Update KPIs
+        const kpiContainer = document.getElementById('kpi-container');
+        kpiContainer.innerHTML = `
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Actual Spend</p>
+                        <h3 class="text-3xl font-black mt-1">${formatCurrency(totals.actual)}</h3>
+                    </div>
+                    <div class="p-3 bg-blue-50 rounded-xl text-blue-600"><i data-lucide="trending-up"></i></div>
+                </div>
+                <div class="flex items-center gap-4 pt-4 border-t border-slate-50 text-xs font-bold">
+                    <span class="${totals.actual > totals.planned ? 'text-red-500' : 'text-emerald-500'}">Planned: ${formatCurrency(totals.planned)}</span>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="flex justify-between items-start mb-2">
+                    <div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Target Utilization</p>
+                        <h3 class="text-3xl font-black mt-1">${totals.target > 0 ? Math.round((totals.actual / totals.target) * 100) : 0}%</h3>
+                    </div>
+                    <div class="p-3 bg-emerald-50 rounded-xl text-emerald-600"><i data-lucide="target"></i></div>
+                </div>
+                <div class="w-full bg-slate-100 h-2 rounded-full mt-4">
+                    <div class="h-full rounded-full ${totals.actual > totals.target ? 'bg-red-500' : 'bg-emerald-500'}" style="width: ${Math.min((totals.actual / (totals.target || 1)) * 100, 100)}%"></div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Planned Execution</p>
+                        <h3 class="text-3xl font-black mt-1">${totals.planned > 0 ? Math.round((totals.actual / totals.planned) * 100) : 0}%</h3>
+                    </div>
+                    <div class="p-3 bg-amber-50 rounded-xl text-amber-600"><i data-lucide="calendar"></i></div>
+                </div>
+                <p class="text-[10px] font-bold text-slate-400">TOTAL PLANNED: ${formatCurrency(totals.planned)}</p>
+            </div>
+        `;
+
+        // Update Table
+        const tableBody = document.getElementById('table-body');
+        tableBody.innerHTML = filtered.length > 0 ? filtered.map(item => {
+            const vsTarget = item.target > 0 ? (item.actual / item.target) * 100 : 0;
+            const vsPlanned = item.planned > 0 ? (item.actual / item.planned) * 100 : 0;
+            const isAlert = item.actual > item.planned || item.actual > item.target;
+
+            return `
+                <tr class="hover:bg-slate-50/50 transition-colors">
+                    <td class="px-6 py-4">
+                        <div class="text-sm font-bold">${item.accountName}</div>
+                        <div class="text-[10px] text-slate-400 font-mono">ID: ${item.accountNo}</div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="text-sm text-slate-700">${item.itemDesc}</div>
+                        <div class="text-[11px] text-slate-400">${item.itemDetail}</div>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <span class="text-[10px] font-black text-slate-600 bg-slate-100 px-2 py-1 rounded uppercase">${item.month}</span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <div class="text-[10px] text-slate-400">Target: ${formatCurrency(item.target)}</div>
+                        <div class="text-[10px] text-slate-400">Planned: ${formatCurrency(item.planned)}</div>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <span class="text-sm font-black text-slate-900">${formatCurrency(item.actual)}</span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <div class="flex flex-col items-end">
+                            <div class="text-[10px] text-slate-400 font-bold uppercase">vs Target</div>
+                            <div class="text-xs ${vsTarget > 100 ? 'text-red-600 font-bold' : 'text-emerald-600 font-bold'}">${vsTarget.toFixed(1)}%</div>
+                            <div class="text-[10px] text-slate-400 font-bold uppercase mt-1">vs Planned</div>
+                            <div class="text-xs ${vsPlanned > 100 ? 'text-red-600 font-bold' : 'text-emerald-600 font-bold'}">${vsPlanned.toFixed(1)}%</div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <div class="inline-flex items-center gap-1 text-[9px] font-black px-2 py-1 rounded-lg border uppercase ${isAlert ? 'text-red-600 bg-red-50 border-red-100' : 'text-emerald-600 bg-emerald-50 border-emerald-100'}">
+                            ${isAlert ? 'Alert' : 'Safe'}
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <div class="flex justify-center gap-1">
+                            <button onclick="openModal('edit', ${item.id})" class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg"><i data-lucide="edit-2" size="14"></i></button>
+                            <button onclick="initiateDelete(${item.id})" class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg"><i data-lucide="trash-2" size="14"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }).join('') : `<tr><td colspan="8" class="px-6 py-12 text-center text-slate-400 italic">No records found.</td></tr>`;
+
+        lucide.createIcons();
+    }
+
+    function updateFilters() {
+        render();
+    }
+
+    // Modal Logic
+    function openModal(mode, id = null) {
+        const modal = document.getElementById('form-modal');
+        const title = document.getElementById('modal-title');
+        const form = document.getElementById('record-form');
+        
+        modal.classList.remove('hidden');
+        
+        if (mode === 'add') {
+            title.textContent = 'New Financial Record';
+            form.reset();
+            document.getElementById('item-id').value = '';
+        } else {
+            const item = data.find(i => i.id === id);
+            title.textContent = 'Edit Financial Record';
+            document.getElementById('item-id').value = item.id;
+            document.getElementById('form-acc').value = item.accountNo;
+            document.getElementById('form-name').value = item.accountName;
+            document.getElementById('form-desc').value = item.itemDesc;
+            document.getElementById('form-detail').value = item.itemDetail;
+            document.getElementById('form-month').value = item.month;
+            document.getElementById('form-target').value = item.target;
+            document.getElementById('form-planned').value = item.planned;
+            document.getElementById('form-actual').value = item.actual;
+        }
+    }
+
+    function closeModal() {
+        document.getElementById('form-modal').classList.add('hidden');
+    }
+
+    function handleFormSubmit(e) {
+        e.preventDefault();
+        const id = document.getElementById('item-id').value;
+        const record = {
+            id: id ? parseInt(id) : Date.now(),
+            accountNo: document.getElementById('form-acc').value,
+            accountName: document.getElementById('form-name').value,
+            itemDesc: document.getElementById('form-desc').value,
+            itemDetail: document.getElementById('form-detail').value,
+            month: document.getElementById('form-month').value,
+            target: parseFloat(document.getElementById('form-target').value),
+            planned: parseFloat(document.getElementById('form-planned').value),
+            actual: parseFloat(document.getElementById('form-actual').value),
+        };
+
+        if (id) {
+            data = data.map(i => i.id === record.id ? record : i);
+        } else {
+            data.push(record);
+        }
+
+        closeModal();
+        render();
+    }
+
+    // Delete Logic
+    function initiateDelete(id) {
+        deleteId = id;
+        document.getElementById('delete-modal').classList.remove('hidden');
+    }
+
+    function closeDeleteModal() {
+        deleteId = null;
+        document.getElementById('delete-modal').classList.add('hidden');
+    }
+
+    document.getElementById('confirm-delete-btn').addEventListener('click', () => {
+        if (deleteId) {
+            data = data.filter(i => i.id !== deleteId);
+            closeDeleteModal();
+            render();
+        }
+    });
+
+    // Run on Load
+    window.onload = () => {
+        initSelects();
+        render();
+        lucide.createIcons();
+    };
+</script>
+</body>
+</html>

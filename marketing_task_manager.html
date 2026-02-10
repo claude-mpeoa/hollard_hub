@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        
+        .stat-card-btn { transition: all 0.2s ease; cursor: pointer; }
+        .stat-card-btn:hover { transform: translateY(-2px); border-color: #3b82f6; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen">
+
+    <div id="app" class="p-4 md:p-6 max-w-[1600px] mx-auto">
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+            <div>
+                <h1 class="text-xl md:text-2xl font-bold flex items-center gap-2">
+                    <i data-lucide="layout-dashboard" class="text-blue-600"></i>
+                    Task Dashboard
+                </h1>
+                <p class="text-slate-500 text-xs md:text-sm text-nowrap">Manage team activity and track project progress</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+                <div class="flex-1 md:flex-none flex items-center gap-2 bg-white border border-slate-200 px-3 py-1.5 rounded-lg shadow-sm">
+                    <i data-lucide="users" class="w-4 h-4 text-slate-400"></i>
+                    <select id="globalTeamFilter" onchange="applyGlobalFilter()" class="w-full md:w-auto text-sm font-medium outline-none bg-transparent cursor-pointer">
+                        <option value="all">All Team Members</option>
+                    </select>
+                </div>
+                <button onclick="openTaskForm()" class="flex-none flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors shadow-sm">
+                    <i data-lucide="plus" class="w-4 h-4"></i> <span class="hidden sm:inline">New Task</span><span class="sm:hidden">New</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4 mb-6" id="stats-grid">
+            <!-- Rendered via JS -->
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <div class="lg:col-span-2 bg-white p-4 md:p-5 rounded-xl border border-slate-200 shadow-sm">
+                <h3 class="font-semibold text-slate-800 mb-6">Tasks per Category & Progress</h3>
+                <div class="h-[250px] md:h-[300px]">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white p-4 md:p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 id="memberChartTitle" class="font-semibold text-slate-800">Team Workload</h3>
+                    <div class="p-1 bg-blue-50 rounded text-[10px] font-bold text-blue-600 uppercase tracking-wider px-2">Live</div>
+                </div>
+                <div class="flex-1 relative min-h-[200px] md:min-h-[250px]">
+                    <canvas id="memberPieChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Row -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white p-4 md:p-5 rounded-xl border border-slate-200 shadow-sm">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h3 class="font-semibold text-slate-800">Workload Distribution</h3>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-tighter">Relative volume comparison</p>
+                    </div>
+                    <div class="flex items-center gap-2 md:gap-3 text-[9px] md:text-[10px] font-bold uppercase tracking-wider">
+                        <span class="flex items-center gap-1"><span class="w-2 h-2 bg-emerald-500 rounded-full"></span> Done</span>
+                        <span class="flex items-center gap-1"><span class="w-2 h-2 bg-blue-200 rounded-full"></span> Left</span>
+                    </div>
+                </div>
+                <div id="workload-list" class="space-y-4 md:space-y-6"></div>
+            </div>
+
+            <div class="bg-white p-4 md:p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col">
+                <h3 class="font-semibold text-slate-800 mb-4">Recent Task Activity</h3>
+                <div id="recent-tasks" class="flex-1 overflow-y-auto space-y-3 pr-2 custom-scrollbar max-h-[300px]"></div>
+                <button onclick="toggleModal(true, 'total')" class="mt-4 text-xs font-semibold text-blue-600 hover:text-blue-700 text-center uppercase tracking-wider py-2">
+                    View All Tasks
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Drill-down Details Modal - REWORKED FOR RESPONSIVENESS -->
+    <div id="taskModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-2 sm:p-4 bg-slate-900/60 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-5xl h-[90vh] md:h-[85vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+            <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-200 flex items-center justify-between bg-white shrink-0">
+                <div class="min-w-0">
+                    <h2 id="modal-title" class="text-lg sm:text-xl font-bold text-slate-800 truncate">Details</h2>
+                    <p id="modal-subtitle" class="text-[10px] sm:text-sm text-slate-500 truncate">Filter and view specific records</p>
+                </div>
+                <button onclick="toggleModal(false)" class="p-2 hover:bg-slate-100 rounded-full transition-colors ml-2 shrink-0">
+                    <i data-lucide="x" class="w-5 h-5 text-slate-500"></i>
+                </button>
+            </div>
+            
+            <div id="modal-filters" class="px-4 sm:px-6 py-3 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center gap-3 sm:gap-4 shrink-0">
+                <div class="flex flex-col flex-1 sm:flex-none min-w-[120px]">
+                    <label class="text-[10px] font-bold text-slate-400 uppercase mb-1">Status</label>
+                    <select id="modalStatusFilter" onchange="applyModalFilters()" class="text-xs sm:text-sm border border-slate-200 rounded-md px-2 py-1.5 bg-white outline-none w-full cursor-pointer">
+                        <option value="total">All Tasks</option>
+                        <option value="completed">Completed</option>
+                        <option value="progress">In Progress</option>
+                        <option value="open">Open Tasks</option>
+                    </select>
+                </div>
+                <div class="flex flex-col flex-1 sm:flex-none min-w-[120px]">
+                    <label class="text-[10px] font-bold text-slate-400 uppercase mb-1">Category</label>
+                    <select id="modalCategoryFilter" onchange="applyModalFilters()" class="text-xs sm:text-sm border border-slate-200 rounded-md px-2 py-1.5 bg-white outline-none w-full cursor-pointer">
+                        <option value="all">All Categories</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-3 sm:p-6 bg-slate-50/50 custom-scrollbar">
+                <div id="modal-content-container" class="grid grid-cols-1 gap-3 sm:gap-4"></div>
+            </div>
+            
+            <div class="px-4 sm:px-6 py-3 sm:py-4 bg-white border-t border-slate-200 flex justify-end shrink-0">
+                <button onclick="toggleModal(false)" class="w-full sm:w-auto px-6 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- New/Edit Task Modal -->
+    <div id="taskFormModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-2 sm:p-4 bg-slate-900/60 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[95vh]">
+            <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between shrink-0">
+                <h2 id="form-modal-title" class="text-lg font-bold text-slate-800">Add New Task</h2>
+                <button onclick="closeTaskForm()" class="p-2 hover:bg-slate-100 rounded-full transition-colors">
+                    <i data-lucide="x" class="w-5 h-5 text-slate-500"></i>
+                </button>
+            </div>
+            <form id="taskForm" class="p-4 sm:p-6 space-y-4 overflow-y-auto custom-scrollbar">
+                <input type="hidden" id="task-id">
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Task Title</label>
+                    <input type="text" id="task-title" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Category</label>
+                        <select id="task-category" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none cursor-pointer">
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Assigned To</label>
+                        <select id="task-assignee" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none cursor-pointer">
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Progress (%)</label>
+                        <input type="number" id="task-progress" min="0" max="100" value="0" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Due Date</label>
+                        <input type="date" id="task-due-date" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Description</label>
+                    <textarea id="task-detail" rows="3" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none resize-none"></textarea>
+                </div>
+                <div class="pt-2 flex flex-col sm:flex-row justify-end gap-3">
+                    <button type="button" onclick="closeTaskForm()" class="order-2 sm:order-1 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg">Cancel</button>
+                    <button type="submit" class="order-1 sm:order-2 px-6 py-2 bg-blue-600 text-white text-sm font-bold rounded-lg hover:bg-blue-700">Save Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let INITIAL_TASKS = [
+            { id: 1, title: 'Summer Campaign Launch', category: 'Campaigns', assignedTo: 'Claude', progress: 75, dueDate: '2024-06-15', detail: 'Finalizing visual assets for social media.' },
+            { id: 2, title: 'Weekly Performance Report', category: 'Reporting', assignedTo: 'Colleague 1', progress: 100, dueDate: '2024-05-20', detail: 'Analysis of last week\'s conversion rates.' },
+            { id: 3, title: 'Website Homepage Update', category: 'Website', assignedTo: 'Colleague 2', progress: 30, dueDate: '2024-06-01', detail: 'Refreshing the hero section.' },
+            { id: 4, title: 'Art Direction Assets', category: 'Creative Studio', assignedTo: 'Creative Studio', progress: 10, dueDate: '2024-06-10', detail: 'Core visual identity refresh.' },
+            { id: 5, title: 'Event Logistics - Q3', category: 'Events and Activations', assignedTo: 'Claude', progress: 45, dueDate: '2024-07-22', detail: 'Coordinating with vendors.' },
+            { id: 6, title: 'Vitality Rewards Email', category: 'Vitality', assignedTo: 'Colleague 1', progress: 90, dueDate: '2024-05-25', detail: 'Final QA on newsletter content.' },
+            { id: 7, title: 'Social Media Channel Sync', category: 'Channels', assignedTo: 'Colleague 3', progress: 60, dueDate: '2024-06-05', detail: 'Aligning posting schedules.' },
+            { id: 8, title: 'Internal Ancillary Review', category: 'Ancilliary', assignedTo: 'Creative Studio', progress: 0, dueDate: '2024-06-12', detail: 'Supplementary brand assets.' },
+            { id: 9, title: 'Email Templates Redesign', category: 'Channels', assignedTo: 'Colleague 3', progress: 20, dueDate: '2024-06-18', detail: 'Converting legacy templates.' }
+        ];
+
+        const CATEGORIES = ['Campaigns', 'Ancilliary', 'Events and Activations', 'Vitality', 'Reporting', 'Creative Briefs', 'Channels', 'Website'];
+        const TEAM_MEMBERS = ['Claude', 'Colleague 2', 'Colleague 3', 'Colleague 4', 'Colleague 5', 'Creative Studio'];
+        const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#71717a'];
+
+        let categoryChart, memberPieChart;
+        let activeGlobalMember = 'all';
+
+        function init() {
+            populateSelectors();
+            refreshUI();
+            document.getElementById('taskForm').onsubmit = handleTaskSubmit;
+            lucide.createIcons();
+        }
+
+        window.onload = init;
+
+        function populateSelectors() {
+            const globalFilter = document.getElementById('globalTeamFilter');
+            const formCat = document.getElementById('task-category');
+            const formAssignee = document.getElementById('task-assignee');
+            const modalCat = document.getElementById('modalCategoryFilter');
+
+            const memberOps = TEAM_MEMBERS.map(m => `<option value="${m}">${m}</option>`).join('');
+            const catOps = CATEGORIES.map(c => `<option value="${c}">${c}</option>`).join('');
+
+            globalFilter.innerHTML = '<option value="all">All Members</option>' + memberOps;
+            formCat.innerHTML = catOps;
+            formAssignee.innerHTML = memberOps;
+            modalCat.innerHTML = '<option value="all">All Categories</option>' + catOps;
+        }
+
+        function refreshUI() {
+            const filtered = activeGlobalMember === 'all' 
+                ? INITIAL_TASKS 
+                : INITIAL_TASKS.filter(t => t.assignedTo === activeGlobalMember);
+
+            renderStats(filtered);
+            renderWorkload(filtered);
+            renderRecentTasks(filtered);
+            renderCharts(filtered);
+            lucide.createIcons();
+        }
+
+        function applyGlobalFilter() {
+            activeGlobalMember = document.getElementById('globalTeamFilter').value;
+            refreshUI();
+        }
+
+        function renderStats(tasks) {
+            const total = tasks.length;
+            const completed = tasks.filter(t => t.progress === 100).length;
+            const inProgress = tasks.filter(t => t.progress > 0 && t.progress < 100).length;
+            const openTasks = tasks.filter(t => t.progress < 100).length;
+            
+            const stats = [
+                { id: 'total', label: 'Total', value: total, icon: 'list', color: 'text-blue-600', bg: 'bg-blue-50' },
+                { id: 'completed', label: 'Done', value: completed, icon: 'check-circle-2', color: 'text-emerald-600', bg: 'bg-emerald-50' },
+                { id: 'progress', label: 'In Progress', value: inProgress, icon: 'trending-up', color: 'text-amber-500', bg: 'bg-amber-50' },
+                { id: 'open', label: 'Open', value: openTasks, icon: 'clock', color: 'text-rose-500', bg: 'bg-rose-50' }
+            ];
+
+            document.getElementById('stats-grid').innerHTML = stats.map(s => `
+                <div onclick="toggleModal(true, '${s.id}')" class="stat-card-btn bg-white p-3 md:p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center sm:items-start justify-between text-center sm:text-left">
+                    <div class="order-2 sm:order-1">
+                        <p class="text-slate-500 text-[9px] md:text-[10px] font-bold uppercase tracking-wider mb-1">${s.label}</p>
+                        <p class="text-xl md:text-2xl font-bold text-slate-900">${s.value}</p>
+                    </div>
+                    <div class="p-2 ${s.bg} rounded-lg mb-2 sm:mb-0 order-1 sm:order-2"><i data-lucide="${s.icon}" class="${s.color} w-4 h-4 md:w-5 md:h-5"></i></div>
+                </div>
+            `).join('');
+        }
+
+        function renderCharts(tasks) {
+            const catCounts = CATEGORIES.map(cat => tasks.filter(t => t.category === cat).length);
+            const catProgress = CATEGORIES.map(cat => {
+                const cTasks = tasks.filter(t => t.category === cat);
+                return cTasks.length ? Math.round(cTasks.reduce((a,b) => a + b.progress, 0) / cTasks.length) : 0;
+            });
+
+            if (categoryChart) categoryChart.destroy();
+            const ctx1 = document.getElementById('categoryChart').getContext('2d');
+            categoryChart = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: CATEGORIES.map(c => c.length > 10 ? c.substring(0, 8) + '..' : c),
+                    datasets: [
+                        { label: 'Tasks', data: catCounts, backgroundColor: '#3b82f6', borderRadius: 4 },
+                        { label: 'Progress %', data: catProgress, backgroundColor: '#10b981', borderRadius: 4 }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } }, scales: { y: { beginAtZero: true } } }
+            });
+
+            updateMemberWorkloadChart(tasks);
+        }
+
+        function updateMemberWorkloadChart(tasks) {
+            const titleEl = document.getElementById('memberChartTitle');
+            titleEl.innerText = activeGlobalMember === 'all' ? "Full Team Workload" : `${activeGlobalMember}'s Focus`;
+
+            const dataRaw = CATEGORIES.map(cat => tasks.filter(t => t.category === cat).length);
+            const filteredData = dataRaw.filter(v => v > 0);
+            const filteredLabels = CATEGORIES.filter((_, i) => dataRaw[i] > 0);
+            const filteredColors = COLORS.filter((_, i) => dataRaw[i] > 0);
+
+            const ctx2 = document.getElementById('memberPieChart').getContext('2d');
+            if (memberPieChart) memberPieChart.destroy();
+            
+            if (filteredData.length === 0) {
+                memberPieChart = new Chart(ctx2, {
+                    type: 'doughnut',
+                    data: { labels: ['No Tasks'], datasets: [{ data: [1], backgroundColor: ['#f1f5f9'] }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } } }
+                });
+                return;
+            }
+
+            memberPieChart = new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: filteredLabels,
+                    datasets: [{ 
+                        data: filteredData, 
+                        backgroundColor: filteredColors,
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false, 
+                    cutout: '70%',
+                    plugins: { 
+                        legend: { 
+                            position: 'bottom',
+                            labels: { boxWidth: 8, padding: 10, font: { size: 10 } }
+                        } 
+                    } 
+                }
+            });
+        }
+
+        function renderWorkload(tasks) {
+            const container = document.getElementById('workload-list');
+            const absoluteMax = Math.max(...TEAM_MEMBERS.map(m => INITIAL_TASKS.filter(t => t.assignedTo === m).length), 1);
+            
+            const visibleMembers = activeGlobalMember === 'all' ? TEAM_MEMBERS : TEAM_MEMBERS.filter(m => m === activeGlobalMember);
+
+            container.innerHTML = visibleMembers.map(m => {
+                const mTasks = INITIAL_TASKS.filter(t => t.assignedTo === m);
+                const count = mTasks.length;
+                const done = mTasks.filter(t => t.progress === 100).length;
+                const barVolumeWidth = (count / absoluteMax) * 100;
+                const completionWidth = count > 0 ? (done / count) * 100 : 0;
+                
+                return `
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-xs">
+                            <span class="font-medium text-slate-700">${m}</span>
+                            <span class="text-[10px] font-semibold text-slate-500">${done}/${count} done</span>
+                        </div>
+                        <div class="w-full h-3 relative">
+                            <div class="h-full bg-slate-100 rounded-full w-full absolute top-0 left-0"></div>
+                            <div class="h-full rounded-full overflow-hidden flex transition-all duration-700 relative z-10" 
+                                 style="width: ${barVolumeWidth}%; min-width: ${count > 0 ? '4px' : '0'}">
+                                <div class="bg-emerald-500 h-full transition-all duration-500" style="width: ${completionWidth}%"></div>
+                                <div class="bg-blue-200 h-full transition-all duration-500" style="width: ${100 - completionWidth}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderRecentTasks(tasks) {
+            const container = document.getElementById('recent-tasks');
+            if (tasks.length === 0) {
+                container.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs italic">No matching tasks.</div>`;
+                return;
+            }
+            container.innerHTML = tasks.slice(0, 10).map(t => `
+                <div class="group flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg border-b border-slate-50 last:border-0 transition-colors">
+                    <i data-lucide="${t.progress === 100 ? 'check-circle' : 'circle'}" class="${t.progress === 100 ? 'text-emerald-500' : 'text-slate-300'} w-4 h-4 shrink-0"></i>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs font-medium text-slate-800 truncate">${t.title}</p>
+                        <p class="text-[10px] text-slate-500">${t.category} • ${t.assignedTo}</p>
+                    </div>
+                    <button onclick="openTaskForm(${t.id})" class="p-1 hover:bg-slate-200 rounded transition-all sm:opacity-0 group-hover:opacity-100">
+                        <i data-lucide="edit-3" class="w-3 h-3 text-slate-600"></i>
+                    </button>
+                    <div class="text-right min-w-[35px]">
+                        <div class="text-[10px] font-bold text-slate-700">${t.progress}%</div>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function openTaskForm(id = null) {
+            const modal = document.getElementById('taskFormModal');
+            const title = document.getElementById('form-modal-title');
+            const form = document.getElementById('taskForm');
+            form.reset();
+            document.getElementById('task-id').value = "";
+
+            if (id) {
+                const task = INITIAL_TASKS.find(t => t.id === id);
+                title.innerText = "Edit Task";
+                document.getElementById('task-id').value = task.id;
+                document.getElementById('task-title').value = task.title;
+                document.getElementById('task-category').value = task.category;
+                document.getElementById('task-assignee').value = task.assignedTo;
+                document.getElementById('task-progress').value = task.progress;
+                document.getElementById('task-due-date').value = task.dueDate;
+                document.getElementById('task-detail').value = task.detail;
+            } else {
+                title.innerText = "Add New Task";
+                document.getElementById('task-due-date').value = new Date().toISOString().split('T')[0];
+                if (activeGlobalMember !== 'all') {
+                    document.getElementById('task-assignee').value = activeGlobalMember;
+                }
+            }
+            modal.classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeTaskForm() {
+            document.getElementById('taskFormModal').classList.add('hidden');
+        }
+
+        function handleTaskSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('task-id').value;
+            const taskData = {
+                title: document.getElementById('task-title').value,
+                category: document.getElementById('task-category').value,
+                assignedTo: document.getElementById('task-assignee').value,
+                progress: parseInt(document.getElementById('task-progress').value),
+                dueDate: document.getElementById('task-due-date').value,
+                detail: document.getElementById('task-detail').value
+            };
+
+            if (id) {
+                const idx = INITIAL_TASKS.findIndex(t => t.id == id);
+                INITIAL_TASKS[idx] = { ...INITIAL_TASKS[idx], ...taskData };
+            } else {
+                taskData.id = Date.now();
+                INITIAL_TASKS.unshift(taskData);
+            }
+
+            closeTaskForm();
+            refreshUI();
+            if (!document.getElementById('taskModal').classList.contains('hidden')) {
+                applyModalFilters();
+            }
+        }
+
+        function toggleModal(show, type = 'total') {
+            const modal = document.getElementById('taskModal');
+            modal.classList.toggle('hidden', !show);
+            if (show) {
+                document.getElementById('modalStatusFilter').value = type;
+                applyModalFilters(type);
+            }
+        }
+
+        function applyModalFilters(overrideType = null) {
+            const statusType = overrideType || document.getElementById('modalStatusFilter').value;
+            const categoryType = document.getElementById('modalCategoryFilter').value;
+            renderModalContent(statusType, categoryType);
+        }
+
+        function renderModalContent(type, categoryFilter = 'all') {
+            const container = document.getElementById('modal-content-container');
+            const title = document.getElementById('modal-title');
+            
+            let source = activeGlobalMember === 'all' ? INITIAL_TASKS : INITIAL_TASKS.filter(t => t.assignedTo === activeGlobalMember);
+            let filteredTasks = [];
+
+            switch(type) {
+                case 'total': title.innerText = "All Tasks"; filteredTasks = [...source]; break;
+                case 'completed': title.innerText = "Completed"; filteredTasks = source.filter(t => t.progress === 100); break;
+                case 'progress': title.innerText = "In Progress"; filteredTasks = source.filter(t => t.progress > 0 && t.progress < 100); break;
+                case 'open': title.innerText = "Open Tasks"; filteredTasks = source.filter(t => t.progress < 100); break;
+            }
+
+            if (categoryFilter !== 'all') {
+                filteredTasks = filteredTasks.filter(t => t.category === categoryFilter);
+            }
+
+            if (filteredTasks.length === 0) {
+                container.innerHTML = `<div class="text-center py-20 text-slate-400 text-sm italic">No tasks found matching these filters.</div>`;
+                return;
+            }
+
+            container.innerHTML = filteredTasks.map(t => `
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div class="flex items-start gap-3 min-w-0">
+                        <div class="mt-1 p-2 ${t.progress === 100 ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-blue-600'} rounded-lg shrink-0">
+                            <i data-lucide="${t.progress === 100 ? 'check-circle' : 'clock'}" class="w-4 h-4"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <h4 class="font-bold text-slate-800 text-sm truncate">${t.title}</h4>
+                            <p class="text-xs text-slate-500">${t.category} • Assigned to ${t.assignedTo}</p>
+                            ${t.detail ? `<p class="text-[11px] text-slate-400 mt-1 italic truncate">${t.detail}</p>` : ''}
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between sm:justify-end gap-6 shrink-0 border-t sm:border-t-0 pt-3 sm:pt-0">
+                        <div class="text-center">
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Due Date</p>
+                            <p class="text-xs font-bold text-slate-700">${t.dueDate}</p>
+                        </div>
+                        <div class="text-center min-w-[60px]">
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Progress</p>
+                            <div class="flex items-center gap-2">
+                                <div class="w-12 h-1.5 bg-slate-100 rounded-full overflow-hidden hidden sm:block">
+                                    <div class="h-full bg-blue-500" style="width: ${t.progress}%"></div>
+                                </div>
+                                <p class="text-xs font-bold text-slate-800">${t.progress}%</p>
+                            </div>
+                        </div>
+                        <button onclick="openTaskForm(${t.id})" class="p-2 hover:bg-slate-100 rounded-lg text-slate-500">
+                            <i data-lucide="edit-3" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>

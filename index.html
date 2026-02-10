@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Analytics Hub</title>
+    <style>
+        /* --- THEME VARIABLES --- */
+        :root {
+            --primary-color: #2563eb;     /* Royal Blue */
+            --sidebar-bg: #0f172a;        /* Slate 900 */
+            --bg-color: #f1f5f9;          /* Slate 100 */
+        }
+
+        /* --- BASE STYLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--sidebar-bg); /* Use the dark Slate background */
+            color: var(--bg-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: opacity 0.5s;
+        }
+
+        /* --- BRANDING & TEXT --- */
+        .brand {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .brand-icon {
+            color: var(--primary-color);
+            font-size: 3rem;
+        }
+
+        .loading-text {
+            font-size: 1.2rem;
+            font-weight: 300;
+            color: #94a3b8; /* Slate 400 */
+            margin-top: 1rem;
+        }
+
+        /* --- SIMPLE ANIMATION (Three Dots) --- */
+        .loading-text span {
+            opacity: 0;
+            animation: fadeInOut 1s infinite;
+        }
+
+        .loading-text span:nth-child(1) {
+            animation-delay: 0s;
+        }
+        .loading-text span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .loading-text span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="brand">
+        <span class="brand-icon">◆</span>
+        <span>ANALYTICS HUB</span>
+    </div>
+
+    <div class="loading-text">
+        Loading secure access point
+        <span>.</span>
+        <span>.</span>
+        <span>.</span>
+    </div>
+
+    <script>
+        // Set the target file (your login page)
+        const targetPage = "login.html"; 
+        
+        // Define the delay in milliseconds (2 seconds)
+        const redirectDelay = 2000; 
+
+        // Redirect the user after the specified delay
+        setTimeout(() => {
+            window.location.href = targetPage;
+        }, redirectDelay);
+    </script>
+
+</body>
+</html>

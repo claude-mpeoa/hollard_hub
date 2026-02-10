@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hollard | Marketing Performance Insights & Analytics Vision 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    :root {
+        /* Primary Brand Colors */
+        --primary: #4A2C6D;        /* Hollard Deep Purple */
+        --primary-hover: #3b2357;
+        --accent: #D40072;         /* Hollard Magenta */
+        --accent-hover: #b30061;
+
+        /* Neutrals */
+        --slate-50: #f8fafc;
+        --slate-100: #f1f5f9;
+        --slate-200: #e2e8f0;
+        --slate-300: #cbd5e1;
+        --slate-400: #94a3b8;
+        --slate-600: #475569;
+        --slate-700: #334155;
+        --slate-800: #1e293b;
+        --slate-900: #2a1a3d;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--slate-50);
+        color: var(--slate-800);
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .tab-button.active {
+        background-color: white;
+        color: var(--primary);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        border-bottom: 3px solid var(--accent);
+    }
+
+    .phase-badge {
+        background: linear-gradient(
+            135deg,
+            var(--primary) 0%,
+            var(--accent) 100%
+        );
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .hollard-gradient {
+    background: linear-gradient(
+        135deg,
+        var(--primary) 0%,
+        var(--accent) 100%
+    ) !important;
+}
+    
+    .metric-card {
+        background: linear-gradient(
+            135deg,
+            var(--slate-50) 0%,
+            var(--slate-100) 100%
+        );
+        border-left: 4px solid var(--primary);
+    }
+</style>
+</head>
+<body class="bg-slate-50 text-slate-900 pb-12">
+
+    <!-- Header -->
+<header class="hollard-gradient text-white border-b sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-6 py-6">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="bg-white/20 backdrop-blur-sm p-3 rounded-xl">
+                    <i data-lucide="bar-chart-3" class="w-8 h-8"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight">Marketing Performance Insights & Analytics</h1>
+                    <p class="text-sky-100 font-medium">6-Month Foundation Roadmap | "Insure Your Unsure" Campaign Era</p>
+                </div>
+            </div>
+            <nav class="flex bg-white/10 backdrop-blur-sm p-1 rounded-xl overflow-x-auto">
+                <button onclick="switchTab('vision')" class="tab-button active px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap transition-all">Vision</button>
+                <button onclick="switchTab('phases')" class="tab-button px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap transition-all">4 Phases</button>
+                <button onclick="switchTab('systems')" class="tab-button px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap transition-all">Systems & Data</button>
+                <button onclick="switchTab('deliverables')" class="tab-button px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap transition-all">Dashboards</button>
+                <button onclick="switchTab('success')" class="tab-button px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap transition-all">Success Metrics</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 mt-8">
+        
+        <!-- VISION TAB -->
+        <div id="vision" class="tab-content active space-y-8">
+            
+            <!-- Hero Mission -->
+            <section class="bg-gradient-to-br from-sky-50 via-cyan-50 to-blue-50 rounded-2xl p-8 border-2 border-sky-200">
+                <div class="flex items-start gap-4 mb-6">
+                    <div class="bg-sky-500 p-3 rounded-xl text-white flex-shrink-0">
+                        <i data-lucide="target" class="w-7 h-7"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h2 class="text-2xl font-bold text-slate-800 mb-3">Mission: Transform Marketing into a Data-Driven Growth Engine</h2>
+                        <p class="text-slate-700 leading-relaxed text-lg mb-4">Build a comprehensive marketing analytics infrastructure that empowers Hollard's marketing team to measure, optimize, and scale the "Insure Your Unsure" campaign and all future initiatives. Move from gut-feel decisions to data-backed strategies that drive customer acquisition, retention, and brand growth across all channels.</p>
+                        <div class="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-sky-200">
+                            <div class="font-semibold text-sky-900 mb-2 flex items-center gap-2">
+                                <i data-lucide="lightbulb" class="w-4 h-4"></i>
+                                Key Opportunity: New Brand Campaign Launch
+                            </div>
+                            <p class="text-sm text-slate-700">The "Insure Your Unsure" campaign (launched Sept 2024) presents a unique opportunity to establish marketing analytics from day one, tracking performance, attribution, and ROI across all touchpoints as Hollard expands across 10+ African markets.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Strategic Context -->
+            <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white rounded-2xl border p-6 shadow-sm">
+                    <h3 class="font-bold text-lg mb-4 flex items-center gap-2 text-slate-800">
+                        <i data-lucide="users" class="w-5 h-5 text-purple-600"></i>
+                        Hollard Marketing Context
+                    </h3>
+                    <ul class="space-y-3 text-sm text-slate-700">
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="check-circle" class="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0"></i>
+                            <span><strong>New CMO Leadership:</strong> Hazel Chimhandamba driving brand repositioning</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="check-circle" class="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0"></i>
+                            <span><strong>Campaign Focus:</strong> "Insure Your Unsure" - positive, human-centered messaging</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="check-circle" class="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0"></i>
+                            <span><strong>Multi-Channel Mix:</strong> Digital ads, TV/radio, broker partnerships, retail activations</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="check-circle" class="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0"></i>
+                            <span><strong>Pan-African Growth:</strong> 10+ markets requiring localized tracking</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="check-circle" class="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0"></i>
+                            <span><strong>Partnership Model:</strong> Heavy focus on intermediaries, brokers, retailers</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-white rounded-2xl border p-6 shadow-sm">
+                    <h3 class="font-bold text-lg mb-4 flex items-center gap-2 text-slate-800">
+                        <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-600"></i>
+                        Current State Challenges
+                    </h3>
+                    <ul class="space-y-3 text-sm text-slate-700">
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="x-circle" class="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0"></i>
+                            <span><strong>No Unified View:</strong> Campaign performance scattered across platforms</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="x-circle" class="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0"></i>
+                            <span><strong>Attribution Gaps:</strong> Unable to connect ad spend to policy sales</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="x-circle" class="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0"></i>
+                            <span><strong>Manual Reporting:</strong> Weekly reports take 10+ hours to compile</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="x-circle" class="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0"></i>
+                            <span><strong>Inconsistent Metrics:</strong> Teams use different definitions for success</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="x-circle" class="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0"></i>
+                            <span><strong>Limited Customer Insights:</strong> NPS and feedback not integrated with behavior</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 6-Month Vision Overview -->
+            <section class="bg-white rounded-2xl border p-6 shadow-sm">
+                <h2 class="text-xl font-bold mb-6 flex items-center gap-3 text-slate-800">
+                    <i data-lucide="map" class="w-6 h-6 text-sky-600"></i>
+                    6-Month Transformation Journey
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="relative">
+                        <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border-2 border-amber-200 h-full">
+                            <div class="mb-3">
+                                <span class="px-3 py-1 bg-amber-500 text-white rounded-full text-xs font-bold">PHASE 1</span>
+                            </div>
+                            <h3 class="font-bold text-slate-800 mb-2">Introduction</h3>
+                            <p class="text-sm text-slate-600 mb-3">Weeks 1-3</p>
+                            <p class="text-xs text-slate-700">Stakeholder mapping, process identification, quick wins identification</p>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="bg-gradient-to-br from-blue-50 to-sky-50 rounded-xl p-5 border-2 border-blue-200 h-full">
+                            <div class="mb-3">
+                                <span class="px-3 py-1 bg-blue-500 text-white rounded-full text-xs font-bold">PHASE 2</span>
+                            </div>
+                            <h3 class="font-bold text-slate-800 mb-2">Discovery</h3>
+                            <p class="text-sm text-slate-600 mb-3">Weeks 4-10</p>
+                            <p class="text-xs text-slate-700">Data audit, gap analysis, automation assessment, tech stack evaluation</p>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="bg-gradient-to-br from-purple-50 to-violet-50 rounded-xl p-5 border-2 border-purple-200 h-full">
+                            <div class="mb-3">
+                                <span class="px-3 py-1 bg-purple-500 text-white rounded-full text-xs font-bold">PHASE 3</span>
+                            </div>
+                            <h3 class="font-bold text-slate-800 mb-2">Documenting</h3>
+                            <p class="text-sm text-slate-600 mb-3">Weeks 11-16</p>
+                            <p class="text-xs text-slate-700">Data strategy, metric definitions, dashboard designs, playbooks</p>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl p-5 border-2 border-emerald-200 h-full">
+                            <div class="mb-3">
+                                <span class="px-3 py-1 bg-emerald-500 text-white rounded-full text-xs font-bold">PHASE 4</span>
+                            </div>
+                            <h3 class="font-bold text-slate-800 mb-2">Delivery</h3>
+                            <p class="text-sm text-slate-600 mb-3">Weeks 17-26</p>
+                            <p class="text-xs text-slate-700">Dashboard launch, automation, training, continuous optimization</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Critical Success Factors -->
+            <section class="bg-white rounded-2xl border p-6 shadow-sm">
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-3 text-slate-800">
+                    <i data-lucide="star" class="w-5 h-5 text-amber-500"></i>
+                    Critical Success Factors
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="flex items-start gap-3 p-4 bg-sky-50 rounded-xl border border-sky-200">
+                        <i data-lucide="handshake" class="w-5 h-5 text-sky-600 mt-0.5 flex-shrink-0"></i>
+                        <div>
+                            <div class="font-semibold text-slate-800 mb-1">CMO & Marketing Team Buy-In</div>
+                            <div class="text-sm text-slate-600">Secure Hazel Chimhandamba's sponsorship and marketing team's active participation</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3 p-4 bg-sky-50 rounded-xl border border-sky-200">
+                        <i data-lucide="layers" class="w-5 h-5 text-sky-600 mt-0.5 flex-shrink-0"></i>
+                        <div>
+                            <div class="font-semibold text-slate-800 mb-1">Cross-Functional Data Access</div>
+                            <div class="text-sm text-slate-600">IT, Sales, and Finance alignment for data integration and API access</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3 p-4 bg-sky-50 rounded-xl border border-sky-200">
+                        <i data-lucide="rocket" class="w-5 h-5 text-sky-600 mt-0.5 flex-shrink-0"></i>
+                        <div>
+                            <div class="font-semibold text-slate-800 mb-1">Quick Wins Early</div>
+                            <div class="text-sm text-slate-600">Deliver initial dashboards in Month 2 to build momentum and prove value</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- PHASES TAB -->
+        <div id="phases" class="tab-content space-y-8">
+            
+            <!-- Phase 1: Introduction -->
+            <section class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-8 border-2 border-amber-200">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="bg-amber-500 p-3 rounded-xl text-white">
+                        <i data-lucide="users-round" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-3 mb-1">
+                            <h2 class="text-2xl font-bold text-slate-800">Phase 1: Introduction</h2>
+                            <span class="phase-badge">Weeks 1-3</span>
+                        </div>
+                        <p class="text-slate-700 font-medium">Identify Key Stakeholders Across Systems & Processes</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-xl p-6">
+                        <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                            <i data-lucide="users" class="w-5 h-5 text-amber-600"></i>
+                            Stakeholder Mapping
+                        </h3>
+                        <ul class="space-y-3 text-sm">
+                            <li class="flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-2"></div>
+                                <div>
+                                    <strong>Marketing Leadership:</strong> CMO Hazel Chimhandamba, Brand team, Campaign managers
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-2"></div>
+                                <div>
+                                    <strong>Digital Marketing:</strong> Social media, PPC, content, SEO teams
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-2"></div>
+                                <div>
+                                    <strong>Partnership Marketing:</strong> Broker relations, retail partnerships, intermediary teams
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-2"></div>
+                                <div>
+                                    <strong>Customer Insights:</strong> NPS owners, survey teams, customer experience
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-2"></div>
+                                <div>
+                                    <strong>Sales & Distribution:</strong> Lead gen owners, conversion tracking, CRM admins
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-2"></div>
+                                <div>
+                                    <strong>Finance:</strong> Budget owners, KPI tracking, ROI reporting
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-2"></div>
+                                <div>
+                                    <strong>IT/Data:</strong> Platform admins, data engineers, API access gatekeepers
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="bg-white rounded-xl p-6">
+                            <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                <i data-lucide="clipboard-list" class="w-5 h-5 text-amber-600"></i>
+                                Key Activities
+                            </h3>
+                            <ul class="space-y-2 text-sm text-slate-700">
+                                <li class="flex items-center gap-2">
+                                    <i data-lucide="check" class="w-4 h-4 text-emerald-600"></i>
+                                    <span>Conduct 15+ stakeholder interviews (1-on-1s)</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i data-lucide="check" class="w-4 h-4 text-emerald-600"></i>
+                                    <span>Map reporting pain points and wish lists</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i data-lucide="check" class="w-4 h-4 text-emerald-600"></i>
+                                    <span>Identify critical business questions to answer</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i data-lucide="check" class="w-4 h-4 text-emerald-600"></i>
+                                    <span>List all current reports and their users</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i data-lucide="check" class="w-4 h-4 text-emerald-600"></i>
+                                    <span>Understand "Insure Your Unsure" campaign KPIs</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i data-lucide="check" class="w-4 h-4 text-emerald-600"></i>
+                                    <span>Identify 3 quick wins for Month 2</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-white rounded-xl p-6">
+                            <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                                <i data-lucide="package" class="w-5 h-5 text-amber-600"></i>
+                                Deliverables
+                            </h3>
+                            <div class="space-y-2 text-sm">
+                                <div class="p-3 bg-amber-50 rounded-lg border border-amber-200">
+                                    <div class="font-semibold text-slate-800">Stakeholder Map & RACI Matrix</div>
+                                    <div class="text-xs text-slate-600 mt-1">Who owns what, who needs what, decision-making flow</div>
+                                </div>
+                                <div class="p-3 bg-amber-50 rounded-lg border border-amber-200">
+                                    <div class="font-semibold text-slate-800">Current State Assessment</div>
+                                    <div class="text-xs text-slate-600 mt-1">1-pager on existing reports, tools, and gaps</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Phase 2: Discovery -->
+            <section class="bg-gradient-to-br from-blue-50 to-sky-50 rounded-2xl p-8 border-2 border-blue-200">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="bg-blue-500 p-3 rounded-xl text-white">
+                        <i data-lucide="search" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-3 mb-1">
+                            <h2 class="text-2xl font-bold text-slate-800">Phase 2: Discovery</h2>
+                            <span class="phase-badge">Weeks 4-10</span>
+                        </div>
+                        <p class="text-slate-700 font-medium">Find Out Where Things Sit, How They Are & What's Automated</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="bg-white rounded-xl p-6">
+                            <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                <i data-lucide="database" class="w-5 h-5 text-blue-600"></i>
+                                Data Source Audit
+                            </h3>
+                            <div class="space-y-3">
+                                <div class="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                                    <div class="font-semibold text-slate-800 mb-2">Google Cloud Platform (GCP)</div>
+                                    <ul class="text-sm text-slate-700 space-y-1">
+                                        <li>• Google Analytics 4 - Website & app tracking</li>
+                                        <li>• Google Ads - Search, Display, YouTube campaigns</li>
+                                        <li>• Google Tag Manager - Event tracking setup</li>
+                                        <li>• BigQuery (if used) - Data warehouse</li>
+                                    </ul>
+                                    <div class="mt-2 text-xs font-mono text-blue-700">
+                                        <strong>Discovery:</strong> Current implementation state, data quality, tracking gaps
+                                    </div>
+                                </div>
+
+                                <div class="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                                    <div class="font-semibold text-slate-800 mb-2">Meta Ads Platform</div>
+                                    <ul class="text-sm text-slate-700 space-y-1">
+                                        <li>• Facebook Ads Manager - Campaign data</li>
+                                        <li>• Instagram advertising - Visual campaigns</li>
+                                        <li>• Meta Pixel - Conversion tracking</li>
+                                        <li>• Audience insights - Demographics, behaviors</li>
+                                    </ul>
+                                    <div class="mt-2 text-xs font-mono text-blue-700">
+                                        <strong>Discovery:</strong> Attribution setup, custom conversions, API access
+                                    </div>
+                                </div>
+
+                                <div class="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                                    <div class="font-semibold text-slate-800 mb-2">TikTok Ads Platform</div>
+                                    <ul class="text-sm text-slate-700 space-y-1">
+                                        <li>• TikTok Ads Manager - Short-form video campaigns</li>
+                                        <li>• TikTok Pixel - Event tracking</li>
+                                        <li>• Audience targeting - Youth demographic focus</li>
+                                    </ul>
+                                    <div class="mt-2 text-xs font-mono text-blue-700">
+                                        <strong>Discovery:</strong> Current usage, performance data, integration options
+                                    </div>
+                                </div>
+
+                                <div class="p-4 bg-sky-50 rounded-lg border-l-4 border-sky-500">
+                                    <div class="font-semibold text-slate-800 mb-2">CRM System</div>
+                                    <ul class="text-sm text-slate-700 space-y-1">
+                                        <li>• Lead management - Source tracking</li>
+                                        <li>• Customer database - Policyholder data</li>
+                                        <li>• Campaign tracking - Email, SMS campaigns</li>
+                                        <li>• Sales pipeline - Conversion funnel</li>
+                                    </ul>
+                                    <div class="mt-2 text-xs font-mono text-sky-700">
+                                        <strong>Discovery:</strong> Data hygiene, lead source attribution, API capabilities
+                                    </div>
+                                </div>
+
+                                <div class="p-4 bg-sky-50 rounded-lg border-l-4 border-sky-500">
+                                    <div class="font-semibold text-slate-800 mb-2">Membership/Policy Systems</div>
+                                    <ul class="text-sm text-slate-700 space-y-1">
+                                        <li>• Active policies by product line</li>
+                                        <li>• New business vs renewals</li>
+                                        <li>• Churn/lapse data</li>
+                                        <li>• Customer lifetime value</li>
+                                    </ul>
+                                    <div class="mt-2 text-xs font-mono text-sky-700">
+                                        <strong>Discovery:</strong> Marketing attribution fields, data extract frequency
+                                    </div>
+                                </div>
+
+                                <div class="p-4 bg-slate-50 rounded-lg border-l-4 border-slate-400">
+                                    <div class="font-semibold text-slate-800 mb-2">Customer Insights & NPS</div>
+                                    <ul class="text-sm text-slate-700 space-y-1">
+                                        <li>• NPS survey platform & scores</li>
+                                        <li>• Customer feedback channels</li>
+                                        <li>• Sentiment analysis tools</li>
+                                        <li>• Brand health tracking</li>
+                                    </ul>
+                                    <div class="mt-2 text-xs font-mono text-slate-700">
+                                        <strong>Discovery:</strong> Survey frequency, data export options, integration APIs
+                                    </div>
+                                </div>
+
+                                <div class="p-4 bg-slate-50 rounded-lg border-l-4 border-slate-400">
+                                    <div class="font-semibold text-slate-800 mb-2">Finance Systems</div>
+                                    <ul class="text-sm text-slate-700 space-y-1">
+                                        <li>• Marketing budgets by channel/campaign</li>
+                                        <li>• Actual spend vs planned spend</li>
+                                        <li>• Revenue attribution</li>
+                                        <li>• ROI tracking mechanisms</li>
+                                    </ul>
+                                    <div class="mt-2 text-xs font-mono text-slate-700">
+                                        <strong>Discovery:</strong> Budget allocation process, spend approval workflows
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl p-6">
+                            <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                <i data-lucide="zap" class="w-5 h-5 text-blue-600"></i>
+                                Automation Assessment
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <div class="text-sm font-semibold text-slate-800 mb-2">Current Automated Processes</div>
+                                    <ul class="text-sm text-slate-600 space-y-1">
+                                        <li class="flex items-center gap-2">
+                                            <i data-lucide="circle-check" class="w-3 h-3 text-emerald-500"></i>
+                                            Google Ads auto-bidding
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <i data-lucide="circle-check" class="w-3 h-3 text-emerald-500"></i>
+                                            Meta automated placements
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <i data-lucide="circle-check" class="w-3 h-3 text-emerald-500"></i>
+                                            CRM email workflows
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-semibold text-slate-800 mb-2">Manual Processes (To Automate)</div>
+                                    <ul class="text-sm text-slate-600 space-y-1">
+                                        <li class="flex items-center gap-2">
+                                            <i data-lucide="circle-x" class="w-3 h-3 text-red-500"></i>
+                                            Weekly campaign reporting
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <i data-lucide="circle-x" class="w-3 h-3 text-red-500"></i>
+                                            Monthly budget reconciliation
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <i data-lucide="circle-x" class="w-3 h-3 text-red-500"></i>
+                                            Lead source attribution
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <i data-lucide="circle-x" class="w-3 h-3 text-red-500"></i>
+                                            Cross-channel performance comparison
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="bg-white rounded-xl p-6">
+                            <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                <i data-lucide="clipboard-check" class="w-5 h-5 text-blue-600"></i>
+                                Gap Analysis
+                            </h3>
+                            <div class="space-y-3 text-sm">
+                                <div class="p-3 bg-red-50 rounded-lg border border-red-200">
+                                    <div class="font-semibold text-red-800 mb-1 flex items-center gap-2">
+                                        <i data-lucide="alert-circle" class="w-4 h-4"></i>
+                                        Critical Gaps
+                                    </div>
+                                    <ul class="text-xs text-red-700 space-y-1">
+                                        <li>• No unified data warehouse</li>
+                                        <li>• Missing attribution model</li>
+                                        <li>• Siloed reporting per channel</li>
+                                        <li>• No customer journey tracking</li>
+                                    </ul>
+                                </div>
+
+                                <div class="p-3 bg-amber-50 rounded-lg border border-amber-200">
+                                    <div class="font-semibold text-amber-800 mb-1 flex items-center gap-2">
+                                        <i data-lucide="info" class="w-4 h-4"></i>
+                                        Medium Priority
+                                    </div>
+                                    <ul class="text-xs text-amber-700 space-y-1">
+                                        <li>• Incomplete tagging taxonomy</li>
+                                        <li>• Limited predictive insights</li>
+                                        <li>• Manual budget tracking</li>
+                                    </ul>
+                                </div>
+
+                                <div class="p-3 bg-emerald-50 rounded-lg border border-emerald-200">
+                                    <div class="font-semibold text-emerald-800 mb-1 flex items-center gap-2">
+                                        <i data-lucide="thumbs-up" class="w-4 h-4"></i>
+                                        Working Well
+                                    </div>
+                                    <ul class="text-xs text-emerald-700 space-y-1">
+                                        <li>• Platform-level tracking (GA4, Meta)</li>
+                                        <li>• CRM lead capture</li>
+                                        <li>• NPS survey collection</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl p-6">
+                            <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                                <i data-lucide="package" class="w-5 h-5 text-blue-600"></i>
+                                Phase Deliverables
+                            </h3>
+                            <div class="space-y-2 text-sm">
+                                <div class="p-3 bg-blue-50 rounded-lg">
+                                    <div class="font-semibold text-slate-800">Data Source Inventory</div>
+                                    <div class="text-xs text-slate-600 mt-1">Complete list with access, refresh frequency, quality scores</div>
+                                </div>
+                                <div class="p-3 bg-blue-50 rounded-lg">
+                                    <div class="font-semibold text-slate-800">Gap Analysis Report</div>
+                                    <div class="text-xs text-slate-600 mt-1">Prioritized list of what's missing vs what's needed</div>
+                                </div>
+                                <div class="p-3 bg-blue-50 rounded-lg">
+                                    <div class="font-semibold text-slate-800">Tech Stack Recommendations</div>
+                                    <div class="text-xs text-slate-600 mt-1">BI tool, data warehouse, integration platforms</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Phase 3: Documenting -->
+            <section class="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-8 border-2 border-purple-200">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="bg-purple-500 p-3 rounded-xl text-white">
+                        <i data-lucide="file-text" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-3 mb-1">
+                            <h2 class="text-2xl font-bold text-slate-800">Phase 3: Documenting</h2>
+                            <span class="phase-badge">Weeks 11-16</span>
+                        </div>
+                        <p class="text-slate-700 font-medium">Plan & Document Outcomes, Standards & Frameworks</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-xl p-6">
+                        <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                            <i data-lucide="book-open" class="w-5 h-5 text-purple-600"></i>
+                            Marketing Metrics Dictionary
+                        </h3>
+                        <p class="text-sm text-slate-600 mb-4">Standardize definitions across all teams to ensure everyone speaks the same language.</p>
+                        <div class="space-y-3 text-sm">
+                            <div class="p-3 bg-purple-50 rounded-lg">
+                                <div class="font-semibold text-slate-800 mb-1">Acquisition Metrics</div>
+                                <ul class="text-xs text-slate-700 space-y-1">
+                                    <li>• Cost Per Lead (CPL)</li>
+                                    <li>• Cost Per Acquisition (CPA)</li>
+                                    <li>• Lead-to-Customer Rate</li>
+                                    <li>• New Policies Written</li>
+                                </ul>
+                            </div>
+                            <div class="p-3 bg-purple-50 rounded-lg">
+                                <div class="font-semibold text-slate-800 mb-1">Engagement Metrics</div>
+                                <ul class="text-xs text-slate-700 space-y-1">
+                                    <li>• Click-Through Rate (CTR)</li>
+                                    <li>• Engagement Rate (Social)</li>
+                                    <li>• Video Completion Rate</li>
+                                    <li>• Time on Site</li>
+                                </ul>
+                            </div>
+                            <div class="p-3 bg-purple-50 rounded-lg">
+                                <div class="font-semibold text-slate-800 mb-1">Brand Metrics</div>
+                                <ul class="text-xs text-slate-700 space-y-1">
+                                    <li>• Brand Awareness (Aided/Unaided)</li>
+                                    <li>• Net Promoter Score (NPS)</li>
+                                    <li>• Share of Voice</li>
+                                    <li>• Campaign Recall</li>
+                                </ul>
+                            </div>
+                            <div class="p-3 bg-purple-50 rounded-lg">
+                                <div class="font-semibold text-slate-800 mb-1">ROI Metrics</div>
+                                <ul class="text-xs text-slate-700 space-y-1">
+                                    <li>• Return on Ad Spend (ROAS)</li>
+                                    <li>• Marketing ROI</li>
+                                    <li>• Customer Lifetime Value (CLV)</li>
+                                    <li>• Payback Period</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="bg-white rounded-xl p-6">
+                            <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                <i data-lucide="git-branch" class="w-5 h-5 text-purple-600"></i>
+                                Attribution Framework
+                            </h3>
+                            <div class="space-y-3 text-sm">
+                                <div class="p-3 bg-purple-50 rounded-lg border-l-4 border-purple-500">
+                                    <div class="font-semibold text-slate-800 mb-2">Multi-Touch Attribution Model</div>
+                                    <p class="text-xs text-slate-700 mb-2">Track the full customer journey from first touch to policy purchase</p>
+                                    <div class="text-xs text-purple-700 font-mono">
+                                        Google Ad → Landing Page → Email → Broker Call → Policy Sale
+                                    </div>
+                                </div>
+                                <div class="p-3 bg-purple-50 rounded-lg">
+                                    <div class="font-semibold text-slate-800 mb-1">Attribution Rules</div>
+                                    <ul class="text-xs text-slate-700 space-y-1">
+                                        <li>• First Touch: 30% credit</li>
+                                        <li>• Last Touch: 40% credit</li>
+                                        <li>• Middle touches: 30% distributed</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl p-6">
+                            <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                <i data-lucide="tag" class="w-5 h-5 text-purple-600"></i>
+                                UTM Tagging Standards
+                            </h3>
+                            <div class="bg-purple-50 rounded-lg p-4 text-xs font-mono">
+                                <div class="mb-3">
+                                    <div class="font-semibold text-purple-800 mb-1">Campaign Naming Convention:</div>
+                                    <div class="text-slate-700">[Region]_[Product]_[Channel]_[Campaign]_[Date]</div>
+                                    <div class="text-purple-600 mt-1">Example: ZA_Motor_Meta_InsureUnsure_Q1-2026</div>
+                                </div>
+                                <div>
+                                    <div class="font-semibold text-purple-800 mb-1">UTM Parameters:</div>
+                                    <ul class="text-slate-700 space-y-0.5">
+                                        <li>• utm_source: google, meta, tiktok</li>
+                                        <li>• utm_medium: cpc, social, email</li>
+                                        <li>• utm_campaign: [campaign name]</li>
+                                        <li>• utm_content: [ad variation]</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl p-6">
+                            <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                                <i data-lucide="layout-dashboard" class="w-5 h-5 text-purple-600"></i>
+                                Dashboard Design Specs
+                            </h3>
+                            <div class="space-y-2 text-sm">
+                                <div class="p-2 bg-purple-50 rounded border-l-4 border-purple-400">
+                                    <div class="font-semibold text-slate-800">Executive Dashboard</div>
+                                    <div class="text-xs text-slate-600">KPIs, campaign ROI, brand health</div>
+                                </div>
+                                <div class="p-2 bg-purple-50 rounded border-l-4 border-purple-400">
+                                    <div class="font-semibold text-slate-800">Channel Performance</div>
+                                    <div class="text-xs text-slate-600">Google, Meta, TikTok, Organic breakdown</div>
+                                </div>
+                                <div class="p-2 bg-purple-50 rounded border-l-4 border-purple-400">
+                                    <div class="font-semibold text-slate-800">Customer Journey</div>
+                                    <div class="text-xs text-slate-600">Funnel analysis, drop-off points</div>
+                                </div>
+                                <div class="p-2 bg-purple-50 rounded border-l-4 border-purple-400">
+                                    <div class="font-semibold text-slate-800">Budget Tracker</div>
+                                    <div class="text-xs text-slate-600">Spend vs plan, pacing alerts</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 bg-white rounded-xl p-6">
+                    <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                        <i data-lucide="package" class="w-5 h-5 text-purple-600"></i>
+                        Phase Deliverables
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="p-4 bg-purple-50 rounded-xl border border-purple-200">
+                            <div class="font-semibold text-slate-800 mb-2">Marketing Analytics Playbook</div>
+                            <div class="text-xs text-slate-600">Complete guide: metrics, processes, tools, standards</div>
+                        </div>
+                        <div class="p-4 bg-purple-50 rounded-xl border border-purple-200">
+                            <div class="font-semibold text-slate-800 mb-2">Dashboard Wireframes</div>
+                            <div class="text-xs text-slate-600">Designed mockups for all 6 core dashboards</div>
+                        </div>
+                        <div class="p-4 bg-purple-50 rounded-xl border border-purple-200">
+                            <div class="font-semibold text-slate-800 mb-2">Data Flow Architecture</div>
+                            <div class="text-xs text-slate-600">Technical diagram showing all integrations</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Phase 4: Delivery -->
+            <section class="bg-gradient-to-br from-emerald-50 to-green-50 rounded-2xl p-8 border-2 border-emerald-200">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="bg-emerald-500 p-3 rounded-xl text-white">
+                        <i data-lucide="rocket" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-3 mb-1">
+                            <h2 class="text-2xl font-bold text-slate-800">Phase 4: Delivery</h2>
+                            <span class="phase-badge">Weeks 17-26</span>
+                        </div>
+                        <p class="text-slate-700 font-medium">Build Solutions That Springboard Marketing Teams</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-xl p-6">
+                        <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                            <i data-lucide="calendar" class="w-5 h-5 text-emerald-600"></i>
+                            Implementation Timeline
+                        </h3>
+                        <div class="space-y-3">
+                            <div class="flex items-start gap-3">
+                                <div class="bg-emerald-500 text-white px-2 py-1 rounded text-xs font-bold min-w-[60px] text-center">Week 17</div>
+                                <div class="flex-1 text-sm">
+                                    <div class="font-semibold text-slate-800">Data Infrastructure Setup</div>
+                                    <div class="text-xs text-slate-600">Data warehouse live, initial pipelines configured</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="bg-emerald-500 text-white px-2 py-1 rounded text-xs font-bold min-w-[60px] text-center">Week 18-19</div>
+                                <div class="flex-1 text-sm">
+                                    <div class="font-semibold text-slate-800">Dashboard Build: Executive</div>
+                                    <div class="text-xs text-slate-600">CMO dashboard with campaign overview & ROI</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="bg-emerald-500 text-white px-2 py-1 rounded text-xs font-bold min-w-[60px] text-center">Week 20</div>
+                                <div class="flex-1 text-sm">
+                                    <div class="font-semibold text-slate-800">Dashboard Build: Paid Media</div>
+                                    <div class="text-xs text-slate-600">Google, Meta, TikTok performance unified</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="bg-emerald-500 text-white px-2 py-1 rounded text-xs font-bold min-w-[60px] text-center">Week 21</div>
+                                <div class="flex-1 text-sm">
+                                    <div class="font-semibold text-slate-800">Dashboard Build: Customer Insights</div>
+                                    <div class="text-xs text-slate-600">NPS, feedback, journey analytics</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="bg-emerald-500 text-white px-2 py-1 rounded text-xs font-bold min-w-[60px] text-center">Week 22</div>
+                                <div class="flex-1 text-sm">
+                                    <div class="font-semibold text-slate-800">Automation: Reporting</div>
+                                    <div class="text-xs text-slate-600">Weekly reports auto-generated & distributed</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="bg-emerald-500 text-white px-2 py-1 rounded text-xs font-bold min-w-[60px] text-center">Week 23-24</div>
+                                <div class="flex-1 text-sm">
+                                    <div class="font-semibold text-slate-800">User Training & Enablement</div>
+                                    <div class="text-xs text-slate-600">3 training sessions, user guides, office hours</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="bg-emerald-500 text-white px-2 py-1 rounded text-xs font-bold min-w-[60px] text-center">Week 25-26</div>
+                                <div class="flex-1 text-sm">
+                                    <div class="font-semibold text-slate-800">Optimization & Handoff</div>
+                                    <div class="text-xs text-slate-600">Feedback incorporation, stability testing, docs</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="bg-white rounded-xl p-6">
+                            <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                <i data-lucide="users" class="w-5 h-5 text-emerald-600"></i>
+                                Training & Enablement
+                            </h3>
+                            <div class="space-y-3 text-sm">
+                                <div class="p-3 bg-emerald-50 rounded-lg border-l-4 border-emerald-500">
+                                    <div class="font-semibold text-slate-800 mb-1">Session 1: Dashboard Navigation</div>
+                                    <div class="text-xs text-slate-700">How to access, filter, and export data from dashboards</div>
+                                </div>
+                                <div class="p-3 bg-emerald-50 rounded-lg border-l-4 border-emerald-500">
+                                    <div class="font-semibold text-slate-800 mb-1">Session 2: Metrics & Interpretation</div>
+                                    <div class="text-xs text-slate-700">Understanding KPIs, benchmarks, and performance indicators</div>
+                                </div>
+                                <div class="p-3 bg-emerald-50 rounded-lg border-l-4 border-emerald-500">
+                                    <div class="font-semibold text-slate-800 mb-1">Session 3: Action-Oriented Insights</div>
+                                    <div class="text-xs text-slate-700">How to turn data into decisions and campaign optimizations</div>
+                                </div>
+                                <div class="p-3 bg-slate-50 rounded-lg border border-slate-300">
+                                    <div class="font-semibold text-slate-800 mb-1 flex items-center gap-2">
+                                        <i data-lucide="headphones" class="w-4 h-4"></i>
+                                        Ongoing Support
+                                    </div>
+                                    <ul class="text-xs text-slate-700 space-y-1">
+                                        <li>• Weekly office hours for Q&A</li>
+                                        <li>• Slack channel for quick questions</li>
+                                        <li>• Video tutorials library</li>
+                                        <li>• Monthly "Analytics Insights" newsletter</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl p-6">
+                            <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                <i data-lucide="repeat" class="w-5 h-5 text-emerald-600"></i>
+                                Continuous Improvement Loop
+                            </h3>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-emerald-100 rounded-full p-2">
+                                        <i data-lucide="message-square" class="w-4 h-4 text-emerald-700"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="font-semibold text-slate-800">Gather Feedback</div>
+                                        <div class="text-xs text-slate-600">User surveys, usage analytics</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-emerald-100 rounded-full p-2">
+                                        <i data-lucide="lightbulb" class="w-4 h-4 text-emerald-700"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="font-semibold text-slate-800">Identify Improvements</div>
+                                        <div class="text-xs text-slate-600">New metrics, features, visualizations</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-emerald-100 rounded-full p-2">
+                                        <i data-lucide="wrench" class="w-4 h-4 text-emerald-700"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="font-semibold text-slate-800">Implement Changes</div>
+                                        <div class="text-xs text-slate-600">Bi-weekly sprint cycles</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-emerald-100 rounded-full p-2">
+                                        <i data-lucide="bar-chart-2" class="w-4 h-4 text-emerald-700"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="font-semibold text-slate-800">Measure Impact</div>
+                                        <div class="text-xs text-slate-600">Track adoption and value delivered</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 bg-white rounded-xl p-6">
+                    <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                        <i data-lucide="gift" class="w-5 h-5 text-emerald-600"></i>
+                        Phase Deliverables
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-200">
+                            <i data-lucide="layout-dashboard" class="w-8 h-8 text-emerald-600 mb-2"></i>
+                            <div class="font-semibold text-slate-800 mb-1">6 Live Dashboards</div>
+                            <div class="text-xs text-slate-600">Fully functional, real-time, accessible</div>
+                        </div>
+                        <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-200">
+                            <i data-lucide="zap" class="w-8 h-8 text-emerald-600 mb-2"></i>
+                            <div class="font-semibold text-slate-800 mb-1">Automated Reports</div>
+                            <div class="text-xs text-slate-600">Weekly & monthly, auto-distributed</div>
+                        </div>
+                        <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-200">
+                            <i data-lucide="users" class="w-8 h-8 text-emerald-600 mb-2"></i>
+                            <div class="font-semibold text-slate-800 mb-1">Trained Users</div>
+                            <div class="text-xs text-slate-600">30+ marketing team members certified</div>
+                        </div>
+                        <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-200">
+                            <i data-lucide="book-open" class="w-8 h-8 text-emerald-600 mb-2"></i>
+                            <div class="font-semibold text-slate-800 mb-1">Documentation</div>
+                            <div class="text-xs text-slate-600">User guides, SOPs, troubleshooting</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- SYSTEMS & DATA TAB -->
+        <div id="systems" class="tab-content space-y-8">
+            <section>
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 text-slate-800">
+                    <i data-lucide="workflow" class="w-6 h-6 text-sky-600"></i>
+                    Marketing Tech Stack & Data Architecture
+                </h2>
+
+                <!-- Tech Stack -->
+                <div class="bg-white rounded-2xl border p-6 mb-6">
+                    <h3 class="font-bold text-lg mb-4 text-slate-800">Recommended Marketing Analytics Stack</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl border border-blue-200">
+                            <div class="text-xs font-bold text-blue-700 uppercase mb-2">Data Warehouse</div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-blue-600 text-white rounded-lg text-sm font-semibold">Google BigQuery</span>
+                                <span class="px-3 py-1 bg-white text-blue-700 rounded-lg text-sm font-semibold border border-blue-300">Snowflake</span>
+                            </div>
+                            <div class="text-xs text-slate-700 mt-2">Central repository for all marketing data</div>
+                        </div>
+
+                        <div class="p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl border border-purple-200">
+                            <div class="text-xs font-bold text-purple-700 uppercase mb-2">BI & Visualization</div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-purple-600 text-white rounded-lg text-sm font-semibold">Looker Studio</span>
+                                <span class="px-3 py-1 bg-white text-purple-700 rounded-lg text-sm font-semibold border border-purple-300">Power BI</span>
+                            </div>
+                            <div class="text-xs text-slate-700 mt-2">Dashboard creation and reporting</div>
+                        </div>
+
+                        <div class="p-4 bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl border border-emerald-200">
+                            <div class="text-xs font-bold text-emerald-700 uppercase mb-2">Data Integration</div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-emerald-600 text-white rounded-lg text-sm font-semibold">Supermetrics</span>
+                                <span class="px-3 py-1 bg-white text-emerald-700 rounded-lg text-sm font-semibold border border-emerald-300">Fivetran</span>
+                            </div>
+                            <div class="text-xs text-slate-700 mt-2">Automated data pipeline connectors</div>
+                        </div>
+
+                        <div class="p-4 bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl border border-orange-200">
+                            <div class="text-xs font-bold text-orange-700 uppercase mb-2">Attribution Platform</div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-orange-600 text-white rounded-lg text-sm font-semibold">Google Attribution</span>
+                                <span class="px-3 py-1 bg-white text-orange-700 rounded-lg text-sm font-semibold border border-orange-300">Rockerbox</span>
+                            </div>
+                            <div class="text-xs text-slate-700 mt-2">Multi-touch attribution modeling</div>
+                        </div>
+
+                        <div class="p-4 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl border border-cyan-200">
+                            <div class="text-xs font-bold text-cyan-700 uppercase mb-2">Tag Management</div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-cyan-600 text-white rounded-lg text-sm font-semibold">Google Tag Manager</span>
+                            </div>
+                            <div class="text-xs text-slate-700 mt-2">Event tracking and pixel management</div>
+                        </div>
+
+                        <div class="p-4 bg-gradient-to-br from-pink-50 to-pink-100 rounded-xl border border-pink-200">
+                            <div class="text-xs font-bold text-pink-700 uppercase mb-2">Customer Data Platform</div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-pink-600 text-white rounded-lg text-sm font-semibold">Segment</span>
+                                <span class="px-3 py-1 bg-white text-pink-700 rounded-lg text-sm font-semibold border border-pink-300">mParticle</span>
+                            </div>
+                            <div class="text-xs text-slate-700 mt-2">Unified customer data management</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Flow -->
+                <div class="bg-white rounded-2xl border p-6">
+                    <h3 class="font-bold text-lg mb-6 text-slate-800">End-to-End Data Flow</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4">
+                            <div class="flex-1 grid grid-cols-3 gap-3">
+                                <div class="bg-blue-100 rounded-xl p-4 text-center border-2 border-blue-300">
+                                    <i data-lucide="megaphone" class="w-6 h-6 text-blue-700 mx-auto mb-2"></i>
+                                    <div class="text-xs font-bold text-blue-900">Advertising Platforms</div>
+                                    <div class="text-xs text-blue-700 mt-1">Google, Meta, TikTok</div>
+                                </div>
+                                <div class="bg-purple-100 rounded-xl p-4 text-center border-2 border-purple-300">
+                                    <i data-lucide="monitor" class="w-6 h-6 text-purple-700 mx-auto mb-2"></i>
+                                    <div class="text-xs font-bold text-purple-900">Website & Apps</div>
+                                    <div class="text-xs text-purple-700 mt-1">GA4, GTM, Pixels</div>
+                                </div>
+                                <div class="bg-emerald-100 rounded-xl p-4 text-center border-2 border-emerald-300">
+                                    <i data-lucide="database" class="w-6 h-6 text-emerald-700 mx-auto mb-2"></i>
+                                    <div class="text-xs font-bold text-emerald-900">Business Systems</div>
+                                    <div class="text-xs text-emerald-700 mt-1">CRM, Policy, Finance</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-center">
+                            <i data-lucide="arrow-down" class="w-8 h-8 text-slate-400"></i>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-orange-100 to-amber-100 rounded-xl p-4 text-center border-2 border-orange-300">
+                            <i data-lucide="shuffle" class="w-8 h-8 text-orange-700 mx-auto mb-2"></i>
+                            <div class="font-bold text-orange-900 mb-1">Data Integration Layer</div>
+                            <div class="text-xs text-orange-700">Supermetrics / Fivetran / API Connectors</div>
+                        </div>
+
+                        <div class="flex justify-center">
+                            <i data-lucide="arrow-down" class="w-8 h-8 text-slate-400"></i>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-sky-100 to-cyan-100 rounded-xl p-4 text-center border-2 border-sky-300">
+                            <i data-lucide="hard-drive" class="w-8 h-8 text-sky-700 mx-auto mb-2"></i>
+                            <div class="font-bold text-sky-900 mb-1">Data Warehouse (BigQuery)</div>
+                            <div class="text-xs text-sky-700">Unified data models, historical storage, transformations</div>
+                        </div>
+
+                        <div class="flex justify-center">
+                            <i data-lucide="arrow-down" class="w-8 h-8 text-slate-400"></i>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-gradient-to-br from-violet-100 to-purple-100 rounded-xl p-4 text-center border-2 border-violet-300">
+                                <i data-lucide="layout-dashboard" class="w-8 h-8 text-violet-700 mx-auto mb-2"></i>
+                                <div class="font-bold text-violet-900 mb-1">Dashboards</div>
+                                <div class="text-xs text-violet-700">Looker Studio / Power BI</div>
+                            </div>
+                            <div class="bg-gradient-to-br from-pink-100 to-rose-100 rounded-xl p-4 text-center border-2 border-pink-300">
+                                <i data-lucide="file-bar-chart" class="w-8 h-8 text-pink-700 mx-auto mb-2"></i>
+                                <div class="font-bold text-pink-900 mb-1">Automated Reports</div>
+                                <div class="text-xs text-pink-700">Email, Slack, PDF exports</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- DELIVERABLES TAB -->
+        <div id="deliverables" class="tab-content space-y-8">
+            <section>
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 text-slate-800">
+                    <i data-lucide="layout-grid" class="w-6 h-6 text-sky-600"></i>
+                    Core Dashboard Suite
+                </h2>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Dashboard 1 -->
+                    <div class="bg-white rounded-2xl border-2 border-purple-200 p-6 shadow-sm hover:shadow-lg transition-shadow">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-lg text-slate-800">1. Executive Marketing Overview</h3>
+                            <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-bold">CMO / LEADERSHIP</span>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-4">High-level view of marketing performance for strategic decision-making</p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="trending-up" class="w-4 h-4 text-purple-600"></i>
+                                <span><strong>Campaign ROI:</strong> "Insure Your Unsure" overall performance</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="dollar-sign" class="w-4 h-4 text-purple-600"></i>
+                                <span><strong>Budget Health:</strong> Spend vs plan, pacing alerts</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="users" class="w-4 h-4 text-purple-600"></i>
+                                <span><strong>Customer Acquisition:</strong> Leads, conversions, CPA</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="award" class="w-4 h-4 text-purple-600"></i>
+                                <span><strong>Brand Metrics:</strong> NPS, awareness, sentiment</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t">
+                            <div class="text-xs text-slate-500 uppercase font-bold mb-1">Refresh Rate</div>
+                            <div class="text-sm font-semibold text-slate-700">Daily (mornings)</div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard 2 -->
+                    <div class="bg-white rounded-2xl border-2 border-blue-200 p-6 shadow-sm hover:shadow-lg transition-shadow">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-lg text-slate-800">2. Paid Media Performance</h3>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold">PERFORMANCE MARKETERS</span>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-4">Unified view of Google, Meta, TikTok and other paid channels</p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="bar-chart" class="w-4 h-4 text-blue-600"></i>
+                                <span><strong>Cross-Channel Metrics:</strong> Impressions, clicks, CTR, conversions</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="target" class="w-4 h-4 text-blue-600"></i>
+                                <span><strong>Platform Breakdown:</strong> Google vs Meta vs TikTok performance</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="zap" class="w-4 h-4 text-blue-600"></i>
+                                <span><strong>ROAS Analysis:</strong> Return on ad spend by campaign</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="sliders" class="w-4 h-4 text-blue-600"></i>
+                                <span><strong>Optimization Insights:</strong> Budget allocation recommendations</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t">
+                            <div class="text-xs text-slate-500 uppercase font-bold mb-1">Refresh Rate</div>
+                            <div class="text-sm font-semibold text-slate-700">Real-time (API sync every hour)</div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard 3 -->
+                    <div class="bg-white rounded-2xl border-2 border-emerald-200 p-6 shadow-sm hover:shadow-lg transition-shadow">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-lg text-slate-800">3. Customer Journey Analytics</h3>
+                            <span class="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold">CX / INSIGHTS</span>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-4">Track how customers move from awareness to purchase</p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="git-branch" class="w-4 h-4 text-emerald-600"></i>
+                                <span><strong>Multi-Touch Attribution:</strong> Full path to conversion</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="filter" class="w-4 h-4 text-emerald-600"></i>
+                                <span><strong>Funnel Analysis:</strong> Drop-off points and bottlenecks</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="clock" class="w-4 h-4 text-emerald-600"></i>
+                                <span><strong>Time to Convert:</strong> Days from first touch to sale</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="repeat" class="w-4 h-4 text-emerald-600"></i>
+                                <span><strong>Touchpoint Analysis:</strong> Most effective channel combinations</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t">
+                            <div class="text-xs text-slate-500 uppercase font-bold mb-1">Refresh Rate</div>
+                            <div class="text-sm font-semibold text-slate-700">Daily (evenings)</div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard 4 -->
+                    <div class="bg-white rounded-2xl border-2 border-orange-200 p-6 shadow-sm hover:shadow-lg transition-shadow">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-lg text-slate-800">4. Campaign Deep Dive</h3>
+                            <span class="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-bold">BRAND / CAMPAIGNS</span>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-4">Detailed performance of "Insure Your Unsure" and all campaigns</p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="layers" class="w-4 h-4 text-orange-600"></i>
+                                <span><strong>Campaign Comparison:</strong> Performance across all active campaigns</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="image" class="w-4 h-4 text-orange-600"></i>
+                                <span><strong>Creative Performance:</strong> Which ad variations win</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="map-pin" class="w-4 h-4 text-orange-600"></i>
+                                <span><strong>Geographic Breakdown:</strong> Performance by region/market</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="calendar" class="w-4 h-4 text-orange-600"></i>
+                                <span><strong>Trend Analysis:</strong> Performance over time (daily, weekly, monthly)</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t">
+                            <div class="text-xs text-slate-500 uppercase font-bold mb-1">Refresh Rate</div>
+                            <div class="text-sm font-semibold text-slate-700">Daily (mornings)</div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard 5 -->
+                    <div class="bg-white rounded-2xl border-2 border-cyan-200 p-6 shadow-sm hover:shadow-lg transition-shadow">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-lg text-slate-800">5. Customer Insights & NPS</h3>
+                            <span class="px-3 py-1 bg-cyan-100 text-cyan-700 rounded-full text-xs font-bold">CX / RESEARCH</span>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-4">Voice of customer data integrated with behavior</p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="star" class="w-4 h-4 text-cyan-600"></i>
+                                <span><strong>NPS Tracking:</strong> Score trends, promoters vs detractors</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="message-square" class="w-4 h-4 text-cyan-600"></i>
+                                <span><strong>Feedback Analysis:</strong> Themes from surveys and reviews</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="users-2" class="w-4 h-4 text-cyan-600"></i>
+                                <span><strong>Segment Insights:</strong> NPS by customer type, product, channel</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="link" class="w-4 h-4 text-cyan-600"></i>
+                                <span><strong>Behavior Correlation:</strong> NPS vs engagement, retention</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t">
+                            <div class="text-xs text-slate-500 uppercase font-bold mb-1">Refresh Rate</div>
+                            <div class="text-sm font-semibold text-slate-700">Weekly</div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard 6 -->
+                    <div class="bg-white rounded-2xl border-2 border-pink-200 p-6 shadow-sm hover:shadow-lg transition-shadow">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-lg text-slate-800">6. Marketing Budget Tracker</h3>
+                            <span class="px-3 py-1 bg-pink-100 text-pink-700 rounded-full text-xs font-bold">FINANCE / PLANNING</span>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-4">Real-time budget monitoring and forecasting</p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="pie-chart" class="w-4 h-4 text-pink-600"></i>
+                                <span><strong>Budget Allocation:</strong> Planned vs actual by channel/campaign</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="trending-down" class="w-4 h-4 text-pink-600"></i>
+                                <span><strong>Pacing Alerts:</strong> Over/under spend warnings</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="calculator" class="w-4 h-4 text-pink-600"></i>
+                                <span><strong>Cost Efficiency:</strong> CPL, CPA, CAC trends</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="calendar-clock" class="w-4 h-4 text-pink-600"></i>
+                                <span><strong>Forecast:</strong> Projected spend to month/quarter end</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t">
+                            <div class="text-xs text-slate-500 uppercase font-bold mb-1">Refresh Rate</div>
+                            <div class="text-sm font-semibold text-slate-700">Real-time (API sync every 2 hours)</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- SUCCESS METRICS TAB -->
+        <div id="success" class="tab-content space-y-8">
+            <section>
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 text-slate-800">
+                    <i data-lucide="trophy" class="w-6 h-6 text-amber-600"></i>
+                    Success Metrics & KPIs
+                </h2>
+
+                <!-- 6-Month Targets -->
+                <div class="bg-white rounded-2xl border p-6 mb-6">
+                    <h3 class="font-bold text-lg mb-4 text-slate-800">6-Month Milestones</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-4 p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg border-l-4 border-amber-500">
+                            <div class="w-24 font-bold text-amber-700">Week 3</div>
+                            <div class="flex-1 text-sm text-slate-700">Stakeholder map complete • Current state documented • Quick wins identified</div>
+                        </div>
+                        <div class="flex items-center gap-4 p-4 bg-gradient-to-r from-blue-50 to-sky-50 rounded-lg border-l-4 border-blue-500">
+                            <div class="w-24 font-bold text-blue-700">Week 10</div>
+                            <div class="flex-1 text-sm text-slate-700">All data sources audited • Gap analysis complete • Tech stack selected</div>
+                        </div>
+                        <div class="flex items-center gap-4 p-4 bg-gradient-to-r from-purple-50 to-violet-50 rounded-lg border-l-4 border-purple-500">
+                            <div class="w-24 font-bold text-purple-700">Week 16</div>
+                            <div class="flex-1 text-slate-700 font-medium">Metrics dictionary published • Attribution model defined • Dashboard wireframes approved</div>
+                        </div>
+                        <div class="flex items-center gap-4 p-4 bg-gradient-to-r from-emerald-50 to-green-50 rounded-lg border-l-4 border-emerald-500">
+                            <div class="w-24 font-bold text-emerald-700">Week 26</div>
+                            <div class="flex-1 text-slate-700 font-medium">6 dashboards live • 30+ users trained • Automation in place • Documentation complete</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quantitative KPIs -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-gradient-to-br from-sky-500 to-cyan-600 text-white rounded-2xl p-6">
+                        <div class="text-5xl font-bold mb-2">90%+</div>
+                        <div class="text-sm font-medium opacity-90 mb-1">Data Quality Score</div>
+                        <div class="text-xs opacity-75">Accurate, complete, timely data across all sources</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-2xl p-6">
+                        <div class="text-5xl font-bold mb-2">6</div>
+                        <div class="text-sm font-medium opacity-90 mb-1">Live Dashboards</div>
+                        <div class="text-xs opacity-75">Covering all key marketing functions and stakeholders</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white rounded-2xl p-6">
+                        <div class="text-5xl font-bold mb-2">30+</div>
+                        <div class="text-sm font-medium opacity-90 mb-1">Active Users</div>
+                        <div class="text-xs opacity-75">Marketing team members using dashboards weekly</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-2xl p-6">
+                        <div class="text-5xl font-bold mb-2">75%</div>
+                        <div class="text-sm font-medium opacity-90 mb-1">Time Saved</div>
+                        <div class="text-xs opacity-75">Reduction in manual reporting effort hours</div>
+                    </div>
+                </div>
+
+                <!-- Qualitative Success Indicators -->
+                <div class="bg-white rounded-2xl border p-6">
+                    <h3 class="font-bold text-lg mb-4 text-slate-800">Qualitative Success Indicators</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-semibold text-slate-800 mb-3 flex items-center gap-2">
+                                <i data-lucide="trending-up" class="w-5 h-5 text-emerald-600"></i>
+                                Team Adoption & Engagement
+                            </h4>
+                            <ul class="space-y-2 text-sm text-slate-700">
+                                <li class="flex items-start gap-2">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5"></div>
+                                    <span>Marketing team references dashboards in weekly stand-ups</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5"></div>
+                                    <span>CMO uses executive dashboard in leadership meetings</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5"></div>
+                                    <span>Reduction in "can you pull this data?" Slack requests</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5"></div>
+                                    <span>Users proactively suggesting new metrics/features</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-slate-800 mb-3 flex items-center gap-2">
+                                <i data-lucide="lightbulb" class="w-5 h-5 text-amber-600"></i>
+                                Data-Driven Decision Making
+                            </h4>
+                            <ul class="space-y-2 text-sm text-slate-700">
+                                <li class="flex items-start gap-2">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5"></div>
+                                    <span>Campaign optimizations backed by dashboard insights</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5"></div>
+                                    <span>Budget reallocation decisions based on ROAS data</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5"></div>
+                                    <span>Creative briefs informed by performance analytics</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5"></div>
+                                    <span>NPS insights driving customer experience improvements</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-slate-800 mb-3 flex items-center gap-2">
+                                <i data-lucide="zap" class="w-5 h-5 text-sky-600"></i>
+                                Operational Efficiency
+                            </h4>
+                            <ul class="space-y-2 text-sm text-slate-700">
+                                <li class="flex items-start gap-2">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-sky-500 mt-1.5"></div>
+                                    <span>Weekly reports auto-generated and distributed on time</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-sky-500 mt-1.5"></div>
+                                    <span>Performance reviews complete faster with live data</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-sky-500 mt-1.5"></div>
+                                    <span>Finance team receives accurate budget reports without manual work</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-sky-500 mt-1.5"></div>
+                                    <span>Cross-functional alignment on definitions and metrics</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-slate-800 mb-3 flex items-center gap-2">
+                                <i data-lucide="shield-check" class="w-5 h-5 text-purple-600"></i>
+                                Data Trust & Confidence
+                            </h4>
+                            <ul class="space-y-2 text-sm text-slate-700">
+                                <li class="flex items-start gap-2">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-purple-500 mt-1.5"></div>
+                                    <span>Single source of truth established for all key metrics</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-purple-500 mt-1.5"></div>
+                                    <span>Stakeholders trust the numbers without validation requests</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-purple-500 mt-1.5"></div>
+                                    <span>Fewer discrepancies between marketing and finance reports</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-purple-500 mt-1.5"></div>
+                                    <span>Data lineage documented and understood</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROI Projection -->
+                <div class="bg-gradient-to-br from-slate-800 to-slate-900 text-white rounded-2xl p-8">
+                    <h3 class="font-bold text-xl mb-6 flex items-center gap-2">
+                        <i data-lucide="trending-up" class="w-6 h-6 text-emerald-400"></i>
+                        Expected Business Impact & ROI
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                        <div>
+                            <div class="text-4xl font-bold text-emerald-400 mb-2">200+ hrs</div>
+                            <div class="text-sm opacity-90 mb-1">Monthly Time Saved</div>
+                            <div class="text-xs opacity-75">Automation eliminates manual reporting grunt work</div>
+                        </div>
+                        <div>
+                            <div class="text-4xl font-bold text-sky-400 mb-2">15-25%</div>
+                            <div class="text-sm opacity-90 mb-1">ROAS Improvement Potential</div>
+                            <div class="text-xs opacity-75">Better attribution = smarter budget allocation</div>
+                        </div>
+                        <div>
+                            <div class="text-4xl font-bold text-purple-400 mb-2">2-3 days</div>
+                            <div class="text-sm opacity-90 mb-1">Faster Campaign Optimization</div>
+                            <div class="text-xs opacity-75">Real-time data enables quicker pivots</div>
+                        </div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                        <div class="font-semibold mb-2 flex items-center gap-2">
+                            <i data-lucide="sparkles" class="w-4 h-4 text-yellow-400"></i>
+                            "Insure Your Unsure" Campaign Impact
+                        </div>
+                        <div class="text-sm opacity-90">With proper analytics in place, we'll be able to track the full customer journey, optimize creative performance, allocate budgets effectively across Google/Meta/TikTok, and prove marketing's contribution to Hollard's growth across all 10+ African markets.</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Quick Reference Card 
+    <aside class="fixed bottom-6 right-6 z-40">
+        <div class="bg-white border-2 border-sky-200 shadow-2xl rounded-2xl p-5 w-80">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                    <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest">Week 1 Priorities</h4>
+                </div>
+            </div>
+            <ul class="space-y-2.5">
+                <li class="flex items-start gap-2 text-xs text-slate-700">
+                    <i data-lucide="circle-check" class="w-3.5 h-3.5 text-sky-600 mt-0.5 flex-shrink-0"></i>
+                    <span class="font-medium">Schedule stakeholder interviews (CMO, digital team, insights)</span>
+                </li>
+                <li class="flex items-start gap-2 text-xs text-slate-700">
+                    <i data-lucide="circle-check" class="w-3.5 h-3.5 text-sky-600 mt-0.5 flex-shrink-0"></i>
+                    <span class="font-medium">Request access to GA4, Meta Ads Manager, CRM</span>
+                </li>
+                <li class="flex items-start gap-2 text-xs text-slate-700">
+                    <i data-lucide="circle-check" class="w-3.5 h-3.5 text-sky-600 mt-0.5 flex-shrink-0"></i>
+                    <span class="font-medium">Review "Insure Your Unsure" campaign brief & KPIs</span>
+                </li>
+                <li class="flex items-start gap-2 text-xs text-slate-700">
+                    <i data-lucide="circle-check" class="w-3.5 h-3.5 text-sky-600 mt-0.5 flex-shrink-0"></i>
+                    <span class="font-medium">List all current reports being produced manually</span>
+                </li>
+            </ul>
+        </div>
+    </aside> -->
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Tab Navigation
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+</html>

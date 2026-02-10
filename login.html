@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Hub - Log In</title>
+    <style>
+        /* --- DESIGN TOKENS --- */
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --slate-50: #f8fafc;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-300: #cbd5e1;
+            --slate-600: #475569;
+            --slate-700: #334155;
+            --slate-900: #0f172a;
+            --error: #ef4444;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at top left, #f1f5f9, #e2e8f0);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* --- BACKGROUND DECORATION --- */
+        .bg-blobs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: var(--primary);
+            filter: blur(80px);
+            opacity: 0.1;
+            border-radius: 50%;
+        }
+
+        .blob-1 { top: -100px; right: -100px; }
+        .blob-2 { bottom: -150px; left: -100px; }
+
+        /* --- LOGIN CARD --- */
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 1px solid white;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+        }
+
+        .login-card.fade-out {
+            transform: scale(0.9) translateY(20px);
+            opacity: 0;
+        }
+
+        .brand-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: var(--primary);
+            color: white;
+            border-radius: 12px;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .brand-name {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--slate-900);
+            letter-spacing: -0.025em;
+        }
+
+        .brand-name span {
+            color: var(--primary);
+        }
+
+        /* --- FORM STYLING --- */
+        .form-group {
+            margin-bottom: 1.25rem;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--slate-700);
+            margin-bottom: 0.5rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1.5px solid var(--slate-200);
+            border-radius: 12px;
+            font-size: 1rem;
+            color: var(--slate-900);
+            background: white;
+            transition: all 0.2s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 0.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-submit:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        /* --- UI FEEDBACK --- */
+        #error-message {
+            background: #fef2f2;
+            color: var(--error);
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none; /* Hidden by default */
+            text-align: center;
+            border: 1px solid #fee2e2;
+        }
+
+        /* --- FOOTER --- */
+        .footer-info {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--slate-100);
+            text-align: center;
+        }
+
+        .footer-info p {
+            font-size: 0.8rem;
+            color: var(--slate-600);
+            line-height: 1.6;
+        }
+
+        .contact-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <main class="login-card" id="loginCard">
+        <header class="brand-header">
+            <div class="logo-icon">◆</div>
+            <h1 class="brand-name">Group Marketing Center of Excellence <span>HUB</span></h1>
+        </header>
+
+        <div id="error-message"></div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" required placeholder="name@hollard.co.za" autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required placeholder="••••••••">
+            </div>
+
+            <button type="submit" class="btn-submit" id="submitBtn">
+                <span id="btnText">Access System</span>
+                <div class="spinner" id="btnSpinner"></div>
+            </button>
+        </form>
+
+        <footer class="footer-info">
+            <p>
+                <strong>Need access?</strong><br>
+                Contact <strong>Claude Mpeoa</strong><br>
+                <a href="mailto:claude.mpeoa@emailaddress.co.za" class="contact-link">claude.mpeoa@emailaddress.co.za</a><br>
+                Group Marketing Analytics & Insights Lead
+            </p>
+        </footer>
+    </main>
+
+    <script>
+        const AUTHORIZED_USERS = {
+            "claude.mpeoa@emailaddress.co.za": { password: "Claude@7072", role: "Administrator" },
+            "hollard.testing@emailaddress.co.za": { password: "hollard@1", role: "HOD" },
+
+            
+            <!-- Add more users here -->
+
+
+        };
+
+        function handleLogin(event) {
+            event.preventDefault();
+
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const errorDiv = document.getElementById('error-message');
+            const btnText = document.getElementById('btnText');
+            const btnSpinner = document.getElementById('btnSpinner');
+            const loginCard = document.getElementById('loginCard');
+
+            const email = emailInput.value.trim().toLowerCase();
+            const password = passwordInput.value.trim();
+
+            // Clear previous errors
+            errorDiv.style.display = 'none';
+
+            // Visual feedback for loading
+            btnText.textContent = "Verifying...";
+            btnSpinner.style.display = 'block';
+
+            // Simulate slight network delay for better UX
+            setTimeout(() => {
+                const user = AUTHORIZED_USERS[email];
+
+                if (user && user.password === password) {
+                    // Success logic
+                    localStorage.setItem('userRole', user.role);
+                    localStorage.setItem('userEmail', email);
+                    
+                    // Animate out
+                    loginCard.classList.add('fade-out');
+                    
+                    setTimeout(() => {
+                        window.location.href = "home-main.html";
+                    }, 500);
+                } else {
+                    // Failure logic
+                    btnText.textContent = "Access Dashboard";
+                    btnSpinner.style.display = 'none';
+                    errorDiv.textContent = "Invalid credentials. Please verify your email and password.";
+                    errorDiv.style.display = 'block';
+                    
+                    // Shake effect on error
+                    loginCard.style.animation = "shake 0.4s ease";
+                    setTimeout(() => { loginCard.style.animation = ""; }, 400);
+                }
+            }, 800);
+        }
+
+        // Simple shake animation CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-8px); }
+                75% { transform: translateX(8px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
