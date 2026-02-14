@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Marketing Intelligence Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-nav { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); }
+        .kpi-card:hover { transform: translateY(-4px); box-shadow: 0 20px 50px rgba(0,0,0,0.04); }
+        .tooltip:hover .tooltip-text { visibility: visible; opacity: 1; }
+    </style>
+</head>
+<body class="bg-[#F8FAFC] text-slate-900 selection:bg-blue-100">
+
+  
+
+    <main class="max-w-[1400px] mx-auto p-6 md:p-8 lg:p-10">
+        
+        <!-- Dashboard Grid -->
+        <div id="metrics-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Cards will be injected by JavaScript -->
+        </div>
+
+        
+    </main>
+
+    
+
+    <script>
+        const metrics = [
+            { id: 1, label: "Marketing Spend", value: 450000, priorYear: 380000, type: "currency", definition: "Total investment across all digital and traditional advertising channels.", icon: "dollar-sign", color: "blue" },
+            { id: 2, label: "Revenue Generated", value: 2850000, priorYear: 2100000, type: "currency", definition: "Total income generated from sales attributed to marketing efforts.", icon: "trending-up", color: "emerald" },
+            { id: 3, label: "ROAS", value: 6.33, priorYear: 5.52, type: "ratio", definition: "Return on Ad Spend: Revenue generated for every R1 spent on advertising.", icon: "bar-chart-3", color: "indigo" },
+            { id: 4, label: "Total Leads", value: 1240, priorYear: 980, type: "number", definition: "Total number of potential customers who engaged with marketing content.", icon: "users", color: "violet" },
+            { id: 5, label: "Sales Generated", value: 186, priorYear: 142, type: "number", definition: "Total number of successful conversions/closed deals.", icon: "shopping-cart", color: "sky" },
+            { id: 6, label: "Average Premium", value: 15322, priorYear: 14788, type: "currency", definition: "The average value of each sale or policy generated.", icon: "target", color: "amber" },
+            { id: 7, label: "Conversion Rate", value: 15, priorYear: 14.5, type: "percentage", definition: "Percentage of leads that successfully turned into sales.", icon: "bar-chart-3", color: "rose" },
+            { id: 8, label: "Cost Per Lead (CPL)", value: 362.90, priorYear: 387.75, type: "currency", inverse: true, definition: "Average marketing spend required to acquire one lead.", icon: "users", color: "slate" },
+            { id: 9, label: "Cost Per Sale (CPS)", value: 2419.35, priorYear: 2676.05, type: "currency", inverse: true, definition: "Average marketing spend required to close a single sale.", icon: "shopping-cart", color: "slate" }
+        ];
+
+        function formatValue(val, type) {
+            if (type === "currency") {
+                return new Intl.NumberFormat('en-ZA', { style: 'currency', currency: 'ZAR', maximumFractionDigits: 0 }).format(val);
+            }
+            if (type === "percentage") return val + '%';
+            if (type === "ratio") return val + 'x';
+            return val.toLocaleString();
+        }
+
+        const grid = document.getElementById('metrics-grid');
+
+        metrics.forEach(m => {
+            const change = ((m.value - m.priorYear) / m.priorYear) * 100;
+            const isPositive = change > 0;
+            const isGoodTrend = m.inverse ? !isPositive : isPositive;
+            
+            const card = document.createElement('div');
+            card.className = "kpi-card group relative bg-white border border-slate-200/70 rounded-[24px] p-6 transition-all duration-300";
+            
+            card.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <div class="p-3 rounded-2xl bg-${m.color}-50 text-${m.color}-600">
+                        <i data-lucide="${m.icon}" class="w-5 h-5"></i>
+                    </div>
+                    <div class="flex flex-col items-end">
+                        <svg class="w-16 h-8 ${isGoodTrend ? 'text-emerald-500' : 'text-rose-500'} opacity-50" viewBox="0 0 100 40" fill="none" stroke="currentColor" stroke-width="3">
+                            <path d="M0 35 Q 20 5, 40 25 T 80 15 T 100 30" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <div class="tooltip relative mt-2">
+                            <i data-lucide="info" class="w-4 h-4 text-slate-300 cursor-help hover:text-slate-500"></i>
+                            <div class="tooltip-text invisible opacity-0 absolute right-0 top-full mt-2 w-56 p-3 bg-slate-900 text-white text-[11px] rounded-xl shadow-2xl z-20 leading-relaxed font-medium transition-all duration-200">
+                                ${m.definition}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6">
+                    <p class="text-[12px] font-bold text-slate-400 uppercase tracking-wider mb-1">${m.label}</p>
+                    <h3 class="text-3xl font-extrabold tracking-tight text-slate-900">
+                        ${formatValue(m.value, m.type)}
+                    </h3>
+                </div>
+
+                <div class="mt-8 flex items-center justify-between bg-slate-50/50 rounded-2xl p-3 border border-slate-100">
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-tight">PY: ${formatValue(m.priorYear, m.type)}</span>
+                    </div>
+                    
+                    <div class="flex items-center gap-0.5 font-bold text-xs py-1.5 px-3 rounded-xl ${isGoodTrend ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-rose-50 text-rose-700 border border-rose-100'}">
+                        <i data-lucide="${isPositive ? 'arrow-up-right' : 'arrow-down-right'}" class="w-3 h-3"></i>
+                        ${Math.abs(change).toFixed(1)}%
+                    </div>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+
+        // Initialize icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
