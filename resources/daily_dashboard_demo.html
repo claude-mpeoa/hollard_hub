@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Marketing Performance Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .kpi-card { 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .kpi-card:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.1); 
+        }
+        .nav-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-left: 4px solid #3b82f6;
+        }
+    </style>
+</head>
+<body class="bg-[#F8FAFC] text-slate-900 min-h-screen flex">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-[#0F172A] text-slate-400 flex-shrink-0 flex flex-col hidden lg:flex">
+        <div class="p-6 flex items-center gap-3">
+            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
+                <i data-lucide="bar-chart-big" class="w-5 h-5"></i>
+            </div>
+            <span class="text-white font-bold text-lg tracking-tight">Demo Dashboard</span>
+        </div>
+        
+        <nav class="mt-4 flex-1">
+            <div class="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-slate-500">Main Menu</div>
+            <button onclick="switchTab('overview')" id="nav-overview" class="nav-item w-full flex items-center gap-3 px-6 py-3 hover:text-white transition-colors active">
+                <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                <span class="text-sm font-semibold">Overview</span>
+            </button>
+            <button onclick="switchTab('marketing')" id="nav-marketing" class="nav-item w-full flex items-center gap-3 px-6 py-3 hover:text-white transition-colors">
+                <i data-lucide="megaphone" class="w-5 h-5"></i>
+                <span class="text-sm font-semibold">Marketing Spend</span>
+            </button>
+            <button onclick="switchTab('leads')" id="nav-leads" class="nav-item w-full flex items-center gap-3 px-6 py-3 hover:text-white transition-colors">
+                <i data-lucide="user-plus" class="w-5 h-5"></i>
+                <span class="text-sm font-semibold">Leads Engine</span>
+            </button>
+            <button onclick="switchTab('sales')" id="nav-sales" class="nav-item w-full flex items-center gap-3 px-6 py-3 hover:text-white transition-colors">
+                <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                <span class="text-sm font-semibold">Sales & Revenue</span>
+            </button>
+        </nav>
+
+        <div class="p-6 border-t border-slate-800">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-slate-700 rounded-full"></div>
+                <div class="overflow-hidden">
+                    <p class="text-xs font-bold text-white truncate">Executive User</p>
+                    <p class="text-[10px] truncate">Admin Account</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Header & Filters -->
+        <header class="bg-white border-b border-slate-200 px-8 py-4">
+            <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-6">
+                <div>
+                    <h2 id="page-title" class="text-2xl font-extrabold text-slate-900 tracking-tight">Daily Performance Overview</h2>
+                    <p class="text-slate-500 text-sm font-medium mt-1">Real-time stats across all South African operations.</p>
+                </div>
+
+                <!-- Global Filters -->
+                <div class="flex flex-wrap items-center gap-3">
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Date Range</label>
+                        <input type="date" class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-sm font-semibold focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Channel</label>
+                        <select class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-sm font-semibold focus:ring-2 focus:ring-blue-500 outline-none">
+                            <option>All Channels</option>
+                            <option>Google Ads</option>
+                            <option>Meta (FB/IG)</option>
+                            <option>TikTok</option>
+                            <option>Email</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Campaign</label>
+                        <select class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-sm font-semibold focus:ring-2 focus:ring-blue-500 outline-none">
+                            <option>All Campaigns</option>
+                            <option>Summer Promo 2026</option>
+                            <option>Retention Drive</option>
+                            <option>Brand Awareness</option>
+                        </select>
+                    </div>
+                    <button class="mt-5 p-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200">
+                        <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dynamic Content Section -->
+        <main class="flex-1 overflow-y-auto p-8" id="content-container">
+            <!-- Grid will be injected here by JS -->
+        </main>
+    </div>
+
+    <script>
+        const dashboardData = {
+            overview: [
+                { label: "Daily Marketing Spend", value: 15400, priorYear: 12100, type: "currency", icon: "megaphone", color: "blue", definition: "Total spend for the selected 24-hour period." },
+                { label: "Daily Revenue", value: 92000, priorYear: 78000, type: "currency", icon: "trending-up", color: "emerald", definition: "Total revenue generated from marketing-attributed sales today." },
+                { label: "Daily Leads", value: 42, priorYear: 38, type: "number", icon: "user-plus", color: "violet", definition: "New potential customers acquired today." },
+                { label: "Daily Sales", value: 8, priorYear: 6, type: "number", icon: "shopping-bag", color: "amber", definition: "Closed deals finalized today." }
+            ],
+            marketing: [
+                { label: "Cost Per Impression", value: 42.50, priorYear: 45.10, type: "currency", icon: "eye", color: "blue", inverse: true, definition: "Average cost for 1,000 views." },
+                { label: "Click Through Rate", value: 3.2, priorYear: 2.8, type: "percentage", icon: "mouse-pointer", color: "indigo", definition: "Percentage of viewers who clicked your ads." },
+                { label: "Total Reach", value: 250000, priorYear: 210000, type: "number", icon: "globe", color: "sky", definition: "Unique people who saw the ads today." }
+            ],
+            leads: [
+                { label: "Cost Per Lead (CPL)", value: 366.60, priorYear: 318.40, type: "currency", icon: "users", color: "violet", inverse: true, definition: "Total spend divided by total leads today." },
+                { label: "Lead Quality Score", value: 8.4, priorYear: 7.2, type: "ratio", icon: "star", color: "purple", definition: "Internal score based on lead profiling." },
+                { label: "Response Time", value: 12, priorYear: 18, type: "minutes", icon: "clock", color: "rose", inverse: true, definition: "Avg time to contact lead in minutes." }
+            ],
+            sales: [
+                { label: "Lead to Sale %", value: 19, priorYear: 15.8, type: "percentage", icon: "check-circle", color: "emerald", definition: "Conversion efficiency today." },
+                { label: "Average Premium", value: 11500, priorYear: 13000, type: "currency", icon: "award", color: "amber", definition: "Average deal size today." },
+                { label: "Cost Per Sale (CPS)", value: 1925, priorYear: 2016, type: "currency", icon: "credit-card", color: "slate", inverse: true, definition: "Marketing cost to acquire one closed sale." }
+            ]
+        };
+
+        function formatValue(val, type) {
+            if (type === "currency") {
+                return new Intl.NumberFormat('en-ZA', { style: 'currency', currency: 'ZAR', maximumFractionDigits: 0 }).format(val);
+            }
+            if (type === "percentage") return val + '%';
+            if (type === "ratio") return val + '/10';
+            if (type === "minutes") return val + 'm';
+            return val.toLocaleString();
+        }
+
+        function renderMetrics(category) {
+            const container = document.getElementById('content-container');
+            const metrics = dashboardData[category];
+            
+            let html = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-in fade-in duration-500">`;
+            
+            metrics.forEach(m => {
+                const change = ((m.value - m.priorYear) / m.priorYear) * 100;
+                const isPositive = change > 0;
+                const isGoodTrend = m.inverse ? !isPositive : isPositive;
+                
+                html += `
+                    <div class="kpi-card bg-white border border-slate-200 rounded-[24px] p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="p-3 rounded-xl bg-${m.color}-50 text-${m.color}-600">
+                                <i data-lucide="${m.icon}" class="w-5 h-5"></i>
+                            </div>
+                            <div class="flex items-center gap-1 font-bold text-[11px] py-1 px-2 rounded-lg ${isGoodTrend ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'}">
+                                <i data-lucide="${isPositive ? 'arrow-up-right' : 'arrow-down-right'}" class="w-3 h-3"></i>
+                                ${Math.abs(change).toFixed(1)}%
+                            </div>
+                        </div>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">${m.label}</p>
+                        <h3 class="text-2xl font-extrabold text-slate-900 mb-4">${formatValue(m.value, m.type)}</h3>
+                        <div class="flex items-center gap-2 pt-4 border-t border-slate-50 text-[10px] text-slate-400 font-medium">
+                            <i data-lucide="info" class="w-3 h-3"></i>
+                            ${m.definition}
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `</div>`;
+            
+            // Add a placeholder for a chart/table
+            html += `
+                <div class="mt-8 bg-white border border-slate-200 rounded-[32px] p-8 min-h-[400px] flex flex-col items-center justify-center text-center">
+                    <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-4 text-slate-300">
+                        <i data-lucide="bar-chart-2" class="w-10 h-10"></i>
+                    </div>
+                    <h4 class="text-lg font-bold text-slate-800">Trend Visualization for ${category}</h4>
+                    <p class="text-slate-400 max-w-sm mt-2 text-sm">Detailed daily trend charts and campaign-level breakdown would load here in a live production environment.</p>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+            lucide.createIcons();
+        }
+
+        function switchTab(tabId) {
+            // Update Navigation UI
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(`nav-${tabId}`).classList.add('active');
+            
+            // Update Title
+            const titles = {
+                overview: "Daily Performance Overview",
+                marketing: "Marketing Spend & Efficiency",
+                leads: "Lead Generation Engine",
+                sales: "Sales & Conversion Analytics"
+            };
+            document.getElementById('page-title').innerText = titles[tabId];
+            
+            // Render Content
+            renderMetrics(tabId);
+        }
+
+        // Initialize
+        switchTab('overview');
+    </script>
+</body>
+</html>
