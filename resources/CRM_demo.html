@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo CRM - Multi-Module Prototype</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .sidebar-item-active { background-color: #3b82f6; color: white; }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .modal-overlay { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: none; }
+        .modal-overlay.active { display: flex; }
+        .animate-fade-in { animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 h-screen overflow-hidden">
+
+    <div class="flex h-full">
+        <!-- SIDEBAR -->
+        <aside class="w-64 bg-slate-950 text-slate-400 flex flex-col shrink-0">
+            <div class="p-6 text-white font-bold text-xl flex items-center gap-2">
+                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-black">N</div>
+                Demo CRM
+            </div>
+            
+            <nav class="flex-1 px-4 space-y-1 mt-4 overflow-y-auto custom-scroll">
+                <!-- CORE -->
+                <p class="px-4 text-[10px] font-bold text-slate-600 uppercase mb-2">Main</p>
+                <button onclick="setView('dashboard')" id="btn-dashboard" class="sidebar-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-slate-900 transition sidebar-item-active">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    Dashboard
+                </button>
+                <button onclick="setView('contacts')" id="btn-contacts" class="sidebar-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-slate-900 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    Master Contacts
+                </button>
+
+                <!-- CALL CENTER MODULE -->
+                <p class="px-4 text-[10px] font-bold text-slate-600 uppercase mb-2 mt-6">Call Center Management</p>
+                <button onclick="setView('cc-leads')" id="btn-cc-leads" class="sidebar-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-slate-900 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    Campaigns & Leads
+                </button>
+                <button onclick="startDialer()" id="btn-dialer" class="sidebar-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-slate-900 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                    Power Dialer
+                </button>
+
+                <!-- CLUB MODULE -->
+                <p class="px-4 text-[10px] font-bold text-slate-600 uppercase mb-2 mt-6">Club Management</p>
+                <button onclick="setView('club-leads')" id="btn-club-leads" class="sidebar-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-slate-900 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    Club Leads
+                </button>
+                <button onclick="setView('appointments')" id="btn-appointments" class="sidebar-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-slate-900 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2v12a2 2 0 002 2z"></path></svg>
+                    Appointments
+                </button>
+            </nav>
+
+            <div class="p-4 border-t border-slate-900">
+                <div class="bg-slate-900 rounded-xl p-3 flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-xs">AD</div>
+                    <div class="overflow-hidden">
+                        <p class="text-xs font-bold text-white truncate">Admin Demo</p>
+                        <p class="text-[10px] text-slate-500 truncate">System Manager</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 flex flex-col relative overflow-hidden">
+            <!-- HEADER -->
+            <header class="h-16 bg-white border-b flex items-center justify-between px-8 shrink-0">
+                <div class="flex items-center bg-slate-100 rounded-xl px-4 py-2 w-96 border border-transparent focus-within:border-blue-400 focus-within:bg-white transition-all">
+                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <input type="text" id="global-search" onkeyup="renderCurrentView()" placeholder="Quick find lead..." class="bg-transparent border-none focus:ring-0 text-sm ml-2 w-full outline-none">
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="text-right mr-2 hidden md:block">
+                        <p class="text-xs font-bold">Main Branch</p>
+                        <p class="text-[10px] text-slate-400">Monday, Feb 9</p>
+                    </div>
+                    <button class="w-10 h-10 rounded-xl bg-slate-50 border flex items-center justify-center hover:bg-white transition relative">
+                        <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                        <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- VIEWS -->
+            <div id="view-container" class="flex-1 overflow-y-auto p-8 custom-scroll">
+                
+                <!-- DASHBOARD -->
+                <div id="view-dashboard" class="animate-fade-in space-y-8">
+                    <div class="flex justify-between items-end">
+                        <div>
+                            <h1 class="text-3xl font-black text-slate-900 tracking-tight">Executive Overview</h1>
+                            <p class="text-slate-500 mt-1">Real-time performance across all modules.</p>
+                        </div>
+                        <button onclick="openAddLeadModal()" class="bg-blue-600 text-white px-6 py-2.5 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path></svg>
+                            Add Intake
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 relative overflow-hidden group">
+                            <div class="absolute right-0 top-0 w-24 h-24 bg-blue-50 rounded-full -mr-10 -mt-10 transition-transform group-hover:scale-110"></div>
+                            <p class="text-slate-500 text-xs font-bold uppercase tracking-wider relative">Total Leads</p>
+                            <p class="text-4xl font-black mt-2 text-slate-900 relative" id="stat-leads-count">0</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 relative overflow-hidden group">
+                            <div class="absolute right-0 top-0 w-24 h-24 bg-emerald-50 rounded-full -mr-10 -mt-10 transition-transform group-hover:scale-110"></div>
+                            <p class="text-slate-500 text-xs font-bold uppercase tracking-wider relative">Appointments</p>
+                            <p class="text-4xl font-black mt-2 text-slate-900 relative" id="stat-appts-count">0</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                            <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Dialer Queue</p>
+                            <p class="text-4xl font-black mt-2 text-blue-600" id="stat-dialer-count">0</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                            <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Conversion Rate</p>
+                            <p class="text-4xl font-black mt-2 text-slate-900">14.2%</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-2 bg-white rounded-3xl border shadow-sm p-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="font-black text-lg">Recent Lead Activity</h3>
+                                <button class="text-blue-600 text-xs font-bold uppercase hover:underline">View All</button>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm">
+                                    <thead>
+                                        <tr class="text-slate-400 border-b border-slate-50">
+                                            <th class="text-left pb-4 font-bold uppercase text-[10px]">Lead Name</th>
+                                            <th class="text-left pb-4 font-bold uppercase text-[10px]">Module</th>
+                                            <th class="text-left pb-4 font-bold uppercase text-[10px]">Status</th>
+                                            <th class="text-right pb-4 font-bold uppercase text-[10px]">Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="dashboard-leads-tbody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="bg-slate-950 text-white rounded-3xl p-8 relative overflow-hidden">
+                                <div class="absolute top-0 right-0 p-4">
+                                    <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                                    </div>
+                                </div>
+                                <h4 class="text-2xl font-black mb-2">Power Dialer</h4>
+                                <p class="text-slate-400 text-sm mb-6">You have pending leads in the campaign queue.</p>
+                                <button onclick="startDialer()" class="w-full bg-blue-600 py-3 rounded-xl font-bold hover:bg-blue-500 transition-colors shadow-lg shadow-blue-900/40">Open Session</button>
+                            </div>
+                            <div class="bg-white border rounded-3xl p-6">
+                                <h4 class="font-bold mb-4">Upcoming Appointments</h4>
+                                <div id="dashboard-appts" class="space-y-4"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GENERIC LIST VIEW (Used for Contacts, CC Leads, Club Leads) -->
+                <div id="view-list" class="hidden animate-fade-in">
+                    <div class="flex justify-between items-center mb-8">
+                        <div>
+                            <h2 id="list-title" class="text-3xl font-black text-slate-900">Leads</h2>
+                            <p id="list-subtitle" class="text-slate-500">Manage records and statuses.</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <select id="list-filter" onchange="renderCurrentView()" class="bg-white border rounded-xl px-4 py-2 text-sm font-bold shadow-sm outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="All">All Statuses</option>
+                                <option value="New Lead">New Lead</option>
+                                <option value="Contact Made">Contact Made</option>
+                                <option value="Appointment Set">Appointment Set</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-3xl border shadow-sm overflow-hidden">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-slate-50 text-slate-500 border-b border-slate-100">
+                                <tr>
+                                    <th class="p-5 uppercase text-[10px] font-black tracking-widest">Identity</th>
+                                    <th class="p-5 uppercase text-[10px] font-black tracking-widest">Source/Branch</th>
+                                    <th class="p-5 uppercase text-[10px] font-black tracking-widest">Status/Phase</th>
+                                    <th class="p-5 uppercase text-[10px] font-black tracking-widest text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="list-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- APPOINTMENTS LIST -->
+                <div id="view-appointments" class="hidden animate-fade-in">
+                    <h2 class="text-3xl font-black mb-8">Club Schedule</h2>
+                    <div class="bg-white rounded-3xl border shadow-sm overflow-hidden">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-slate-50 text-slate-500 border-b">
+                                <tr>
+                                    <th class="p-5 font-black uppercase text-[10px]">Patient/Member</th>
+                                    <th class="p-5 font-black uppercase text-[10px]">Branch</th>
+                                    <th class="p-5 font-black uppercase text-[10px]">Date & Time</th>
+                                    <th class="p-5 font-black uppercase text-[10px] text-right">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="full-appointments-list"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- DIALER -->
+                <div id="view-dialer" class="hidden h-full flex items-center justify-center animate-fade-in">
+                    <div class="w-full max-w-6xl bg-white rounded-[40px] border shadow-2xl flex overflow-hidden min-h-[600px]">
+                        <div class="flex-1 p-12 flex flex-col border-r border-slate-50 relative">
+                            <div class="flex justify-between items-start mb-8">
+                                <div class="space-y-1">
+                                    <p class="text-blue-600 font-black text-xs uppercase tracking-widest">Lead Identity</p>
+                                    <h1 class="text-5xl font-black text-slate-900" id="dialer-name">—</h1>
+                                    <p class="text-slate-400 text-xl font-medium mt-2" id="dialer-phone">—</p>
+                                </div>
+                                <div class="bg-emerald-500 text-white text-[10px] font-black px-4 py-2 rounded-full uppercase tracking-widest">Active Call Session</div>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-8 mt-4" id="dialer-meta"></div>
+
+                            <div class="mt-auto pt-10 flex gap-4">
+                                <button onclick="setView('dashboard')" class="px-8 py-4 bg-slate-50 text-slate-400 rounded-2xl font-bold hover:bg-slate-100 transition">End Session</button>
+                                <button onclick="window.print()" class="px-8 py-4 bg-slate-50 text-slate-600 rounded-2xl font-bold hover:bg-slate-100 transition flex items-center gap-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                                    Print Summary
+                                </button>
+                            </div>
+                        </div>
+                        <div class="w-[400px] bg-slate-50 p-10 flex flex-col border-l">
+                            <h3 class="font-black text-xl mb-6">Outcome Data</h3>
+                            
+                            <div class="space-y-6 flex-1">
+                                <div>
+                                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Phase Transition</label>
+                                    <select id="dialer-reason" class="w-full p-4 bg-white border rounded-2xl font-bold text-slate-900 shadow-sm outline-none focus:ring-2 focus:ring-blue-500">
+                                        <option>New Lead</option>
+                                        <option>Contact Made</option>
+                                        <option>Appointment Set</option>
+                                        <option>Presentation Done</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Lead Closure Status</label>
+                                    <select id="dialer-closed" class="w-full p-4 bg-white border rounded-2xl font-bold text-slate-900 shadow-sm outline-none">
+                                        <option>Lead not yet closed</option>
+                                        <option>Authorised Sale</option>
+                                        <option>Lead Lost/Declined</option>
+                                        <option>Existing Member Upgraded</option>
+                                        <option>Lead Uncontactable</option>
+                                    </select>
+                                </div>
+                                <div class="flex-1">
+                                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Session Notes</label>
+                                    <textarea id="dialer-notes" class="w-full h-32 p-4 bg-white border rounded-2xl text-sm shadow-sm outline-none" placeholder="Enter call details..."></textarea>
+                                </div>
+                            </div>
+                            
+                            <button onclick="saveDialerResult()" class="w-full bg-blue-600 text-white py-5 rounded-[24px] font-black text-lg shadow-xl shadow-blue-200 mt-8 hover:bg-blue-700 transition transform hover:-translate-y-1">SAVE & NEXT</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL: ADD ENTRY -->
+    <div id="add-lead-modal" class="modal-overlay fixed inset-0 z-[120] items-center justify-center p-4">
+        <div class="bg-white w-full max-w-2xl rounded-[32px] shadow-2xl overflow-hidden animate-fade-in">
+            <div class="px-10 py-8 bg-slate-50 border-b flex justify-between items-center">
+                <h2 class="text-2xl font-black">Data Entry Portal</h2>
+                <button onclick="closeAddLeadModal()" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-slate-200 transition">✕</button>
+            </div>
+            <div class="px-10 py-8">
+                <div class="flex border-b mb-8 bg-slate-100 rounded-2xl p-1.5">
+                    <button onclick="setTab('cc')" id="tab-cc" class="flex-1 py-3 text-xs font-black rounded-xl text-blue-600 bg-white shadow-sm transition-all">Call Center Lead</button>
+                    <button onclick="setTab('club')" id="tab-club" class="flex-1 py-3 text-xs font-black rounded-xl text-slate-500 transition-all">Club Lead (Walk-in)</button>
+                    <button onclick="setTab('appt')" id="tab-appt" class="flex-1 py-3 text-xs font-black rounded-xl text-slate-500 transition-all">Appointment</button>
+                </div>
+                <div id="form-fields" class="grid grid-cols-2 gap-6 max-h-[50vh] overflow-y-auto pr-4 custom-scroll"></div>
+            </div>
+            <div class="px-10 py-8 border-t bg-slate-50 flex justify-end gap-4">
+                <button onclick="closeAddLeadModal()" class="px-8 py-3 text-slate-500 font-bold hover:text-slate-800 transition">Cancel</button>
+                <button onclick="submitEntry()" class="px-10 py-3 bg-blue-600 text-white font-bold rounded-2xl shadow-lg shadow-blue-100 hover:bg-blue-700 transition">Create Record</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-10 py-5 rounded-3xl shadow-2xl translate-y-40 transition-all duration-500 z-[200] flex items-center gap-4">
+        <div class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">✓</div>
+        <span id="toast-message" class="font-bold">Success</span>
+    </div>
+
+    <script>
+        // --- DATA LAYER ---
+        const CONTACTS = [
+            { id: 1, firstName: "Sarah", lastName: "Jenkins", phone: "+1 (555) 012-3456", email: "sarah@ex.com", reason: "Contact Made", closed: "Lead not yet closed", source: "Member Referral", module: "Call Center", date: "2026-02-01", branch: "N/A" },
+            { id: 2, firstName: "Mike", lastName: "Tyson", phone: "+1 (555) 999-8888", email: "mike@ring.com", reason: "New Lead", closed: "Lead not yet closed", source: "Walk-in", module: "Club", date: "2026-02-08", branch: "Downtown" }
+        ];
+        const APPOINTMENTS = [
+            { id: 101, name: "Sarah Jenkins", branch: "Downtown", date: "2026-02-12", time: "14:30", status: "Confirmed" }
+        ];
+
+        let currentView = 'dashboard';
+        let currentTab = 'cc';
+        let dialerIdx = 0;
+        let activeDialerQueue = [];
+
+        // --- CORE NAVIGATION ---
+        function setView(view) {
+            currentView = view;
+            const container = document.getElementById('view-container');
+            const listModule = document.getElementById('view-list');
+            const dashboardModule = document.getElementById('view-dashboard');
+            const apptModule = document.getElementById('view-appointments');
+            const dialerModule = document.getElementById('view-dialer');
+
+            // Reset UI
+            [listModule, dashboardModule, apptModule, dialerModule].forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.sidebar-item').forEach(btn => btn.classList.remove('sidebar-item-active'));
+
+            // Toggle active sidebar link
+            const activeBtn = document.getElementById(`btn-${view}`);
+            if(activeBtn) activeBtn.classList.add('sidebar-item-active');
+
+            if (view === 'dashboard') {
+                dashboardModule.classList.remove('hidden');
+                renderDashboard();
+            } else if (view === 'appointments') {
+                apptModule.classList.remove('hidden');
+                renderAppointments();
+            } else if (view === 'dialer') {
+                dialerModule.classList.remove('hidden');
+            } else {
+                listModule.classList.remove('hidden');
+                setupListView(view);
+            }
+            updateStats();
+        }
+
+        function setupListView(view) {
+            const title = document.getElementById('list-title');
+            const sub = document.getElementById('list-subtitle');
+            
+            if (view === 'contacts') {
+                title.innerText = "Master Contacts";
+                sub.innerText = "Unified database of all historical records.";
+            } else if (view === 'cc-leads') {
+                title.innerText = "Call Center Leads";
+                sub.innerText = "Leads generated via campaigns and phone-ins.";
+            } else if (view === 'club-leads') {
+                title.innerText = "Club Management";
+                sub.innerText = "Walk-ins and local branch inquiries.";
+            }
+            renderCurrentView();
+        }
+
+        // --- RENDERING ---
+        function renderCurrentView() {
+            if (currentView === 'dashboard') return renderDashboard();
+            if (currentView === 'appointments') return renderAppointments();
+            
+            const query = document.getElementById('global-search').value.toLowerCase();
+            const filter = document.getElementById('list-filter').value;
+            
+            let filtered = CONTACTS;
+            if (currentView === 'cc-leads') filtered = CONTACTS.filter(c => c.module === 'Call Center');
+            if (currentView === 'club-leads') filtered = CONTACTS.filter(c => c.module === 'Club');
+
+            filtered = filtered.filter(c => {
+                const matchesSearch = (c.firstName + " " + c.lastName).toLowerCase().includes(query);
+                const matchesStatus = filter === 'All' || c.reason === filter;
+                return matchesSearch && matchesStatus;
+            });
+
+            document.getElementById('list-tbody').innerHTML = filtered.map(c => `
+                <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                    <td class="p-5">
+                        <p class="font-black text-slate-900">${c.firstName} ${c.lastName}</p>
+                        <p class="text-xs text-slate-400">${c.phone}</p>
+                    </td>
+                    <td class="p-5">
+                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-tighter block">${c.module}</span>
+                        <p class="text-sm text-slate-700">${c.source}</p>
+                    </td>
+                    <td class="p-5">
+                        <span class="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border border-blue-100">${c.reason}</span>
+                    </td>
+                    <td class="p-5 text-right">
+                        <button onclick="linkLeadToAppt(${c.id})" class="text-blue-600 font-black text-[10px] uppercase hover:underline">Link Appt</button>
+                        <span class="mx-2 text-slate-200">|</span>
+                        <button class="text-slate-400 font-bold text-[10px] uppercase hover:text-slate-900 transition">Details</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderDashboard() {
+            document.getElementById('dashboard-leads-tbody').innerHTML = CONTACTS.slice(0, 5).map(c => `
+                <tr class="border-b border-slate-50">
+                    <td class="py-4 font-bold text-slate-900">${c.firstName} ${c.lastName}</td>
+                    <td class="py-4 text-[10px] font-black uppercase text-slate-400 tracking-widest">${c.module}</td>
+                    <td class="py-4"><span class="text-[10px] font-black text-blue-500 uppercase">${c.reason}</span></td>
+                    <td class="py-4 text-right text-slate-400 font-medium text-xs">${c.date}</td>
+                </tr>`).join('');
+
+            document.getElementById('dashboard-appts').innerHTML = APPOINTMENTS.slice(0, 3).map(a => `
+                <div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                    <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2v12a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold">${a.name}</p>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">${a.time} @ ${a.branch}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderAppointments() {
+            document.getElementById('full-appointments-list').innerHTML = APPOINTMENTS.map(a => `
+                <tr class="border-b border-slate-50 hover:bg-slate-50">
+                    <td class="p-5 font-black text-slate-900">${a.name}</td>
+                    <td class="p-5 text-slate-500 font-medium">${a.branch}</td>
+                    <td class="p-5 font-bold text-slate-700">${a.date} <span class="text-slate-400 ml-1 font-medium">${a.time}</span></td>
+                    <td class="p-5 text-right"><span class="bg-emerald-50 text-emerald-600 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border border-emerald-100">${a.status}</span></td>
+                </tr>`).join('');
+        }
+
+        // --- DIALER LOGIC ---
+        function startDialer() {
+            activeDialerQueue = CONTACTS.filter(c => c.closed === 'Lead not yet closed' && c.module === 'Call Center');
+            if(!activeDialerQueue.length) return showToast("No pending Call Center leads.");
+            dialerIdx = 0;
+            setView('dialer');
+            loadNextDialer();
+        }
+
+        function loadNextDialer() {
+            const c = activeDialerQueue[dialerIdx];
+            document.getElementById('dialer-name').innerText = `${c.firstName} ${c.lastName}`;
+            document.getElementById('dialer-phone').innerText = c.phone;
+            document.getElementById('dialer-reason').value = c.reason;
+            document.getElementById('dialer-closed').value = c.closed;
+            document.getElementById('dialer-meta').innerHTML = `
+                <div class="bg-white p-6 rounded-3xl border shadow-sm">
+                    <p class="text-[10px] font-black text-slate-400 uppercase mb-1">Acquisition Source</p>
+                    <p class="font-bold text-slate-900">${c.source}</p>
+                </div>
+                <div class="bg-white p-6 rounded-3xl border shadow-sm">
+                    <p class="text-[10px] font-black text-slate-400 uppercase mb-1">Branch Preference</p>
+                    <p class="font-bold text-slate-900">${c.branch || 'Online / General'}</p>
+                </div>
+            `;
+        }
+
+        function saveDialerResult() {
+            const current = activeDialerQueue[dialerIdx];
+            const updated = CONTACTS.find(c => c.id === current.id);
+            updated.reason = document.getElementById('dialer-reason').value;
+            updated.closed = document.getElementById('dialer-closed').value;
+            
+            showToast(`Logged outcome for ${updated.firstName}`);
+            
+            dialerIdx++;
+            if (dialerIdx < activeDialerQueue.length) {
+                loadNextDialer();
+            } else {
+                showToast("Campaign queue finished!");
+                setView('dashboard');
+            }
+        }
+
+        // --- INTAKE PORTAL ---
+        function setTab(tab) {
+            currentTab = tab;
+            ['cc', 'club', 'appt'].forEach(t => {
+                const el = document.getElementById(`tab-${t}`);
+                if (t === tab) {
+                    el.className = "flex-1 py-3 text-xs font-black rounded-xl text-blue-600 bg-white shadow-sm transition-all";
+                } else {
+                    el.className = "flex-1 py-3 text-xs font-black rounded-xl text-slate-500 transition-all";
+                }
+            });
+            renderFormFields();
+        }
+
+        function renderFormFields() {
+            const container = document.getElementById('form-fields');
+            if (currentTab === 'appt') {
+                container.innerHTML = `
+                    <div class="col-span-2">
+                        <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block tracking-widest">Select Contact</label>
+                        <select id="f_appt_contact" class="w-full border-2 rounded-2xl p-3 outline-none focus:border-blue-500">
+                            ${CONTACTS.map(c => `<option value="${c.firstName} ${c.lastName}">${c.firstName} ${c.lastName}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="col-span-1">
+                        <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block tracking-widest">Branch</label>
+                        <select id="f_appt_branch" class="w-full border-2 rounded-2xl p-3 outline-none"><option>Downtown</option><option>North Mall</option></select>
+                    </div>
+                    <div class="col-span-1">
+                        <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block tracking-widest">Provider</label>
+                        <select id="f_appt_prov" class="w-full border-2 rounded-2xl p-3 outline-none"><option>Dr. Smith</option><option>Coach Miller</option></select>
+                    </div>
+                    <div class="col-span-1"><input type="date" id="f_appt_date" class="w-full border-2 rounded-2xl p-3 outline-none"></div>
+                    <div class="col-span-1"><input type="time" id="f_appt_time" class="w-full border-2 rounded-2xl p-3 outline-none"></div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="col-span-1">
+                        <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block tracking-widest">First Name</label>
+                        <input type="text" id="f_first" class="w-full border-2 rounded-2xl p-3 outline-none focus:border-blue-500">
+                    </div>
+                    <div class="col-span-1">
+                        <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block tracking-widest">Last Name</label>
+                        <input type="text" id="f_last" class="w-full border-2 rounded-2xl p-3 outline-none focus:border-blue-500">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block tracking-widest">Mobile Number</label>
+                        <input type="tel" id="f_phone" class="w-full border-2 rounded-2xl p-3 outline-none focus:border-blue-500">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block tracking-widest">Source</label>
+                        <select id="f_source" class="w-full border-2 rounded-2xl p-3 outline-none bg-white">
+                            <option>Social Media</option><option>Member Referral</option><option>Point of Sale</option><option>Event Promo</option>
+                        </select>
+                    </div>
+                    ${currentTab === 'club' ? `
+                    <div class="col-span-2">
+                        <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block tracking-widest">Home Branch</label>
+                        <select id="f_branch" class="w-full border-2 rounded-2xl p-3 outline-none bg-white">
+                            <option>Downtown</option><option>North Mall</option>
+                        </select>
+                    </div>` : ''}
+                `;
+            }
+        }
+
+        function submitEntry() {
+            if (currentTab === 'appt') {
+                APPOINTMENTS.unshift({
+                    id: Date.now(),
+                    name: document.getElementById('f_appt_contact').value,
+                    branch: document.getElementById('f_appt_branch').value,
+                    date: document.getElementById('f_appt_date').value,
+                    time: document.getElementById('f_appt_time').value,
+                    status: 'Confirmed'
+                });
+                setView('appointments');
+            } else {
+                CONTACTS.unshift({
+                    id: Date.now(),
+                    firstName: document.getElementById('f_first').value,
+                    lastName: document.getElementById('f_last').value,
+                    phone: document.getElementById('f_phone').value,
+                    source: document.getElementById('f_source').value,
+                    module: currentTab === 'cc' ? 'Call Center' : 'Club',
+                    branch: currentTab === 'club' ? document.getElementById('f_branch').value : 'N/A',
+                    reason: 'New Lead',
+                    closed: 'Lead not yet closed',
+                    date: new Date().toISOString().split('T')[0]
+                });
+                setView(currentTab === 'cc' ? 'cc-leads' : 'club-leads');
+            }
+            closeAddLeadModal();
+            showToast("Record Successfully Stored");
+        }
+
+        function linkLeadToAppt(id) {
+            openAddLeadModal();
+            setTab('appt');
+            const lead = CONTACTS.find(c => c.id === id);
+            setTimeout(() => {
+                document.getElementById('f_appt_contact').value = `${lead.firstName} ${lead.lastName}`;
+            }, 100);
+        }
+
+        // --- UTILS ---
+        function updateStats() {
+            document.getElementById('stat-leads-count').innerText = CONTACTS.length;
+            document.getElementById('stat-appts-count').innerText = APPOINTMENTS.length;
+            document.getElementById('stat-dialer-count').innerText = CONTACTS.filter(c => c.module === 'Call Center' && c.closed === 'Lead not yet closed').length;
+        }
+
+        function openAddLeadModal() { document.getElementById('add-lead-modal').classList.add('active'); setTab('cc'); }
+        function closeAddLeadModal() { document.getElementById('add-lead-modal').classList.remove('active'); }
+        function showToast(m) { const t = document.getElementById('toast'); document.getElementById('toast-message').innerText = m; t.classList.remove('translate-y-40'); setTimeout(() => t.classList.add('translate-y-40'), 3000); }
+
+        window.onload = () => {
+            setView('dashboard');
+        };
+    </script>
+</body>
+</html>
