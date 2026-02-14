@@ -581,28 +581,8 @@
 
         <!-- VIEW: SALES CRM LAUNCHER -->
         <div id="view-sales-crm" class="view-container">
-            <div class="content-card" style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                <div style="font-size: 4rem; margin-bottom: 1.5rem;">💼</div>
-                <h2 style="margin-bottom: 1rem; font-size: 1.75rem; color: var(--primary);">Sales CRM Terminal</h2>
-                <p style="color: var(--slate-600); max-width: 450px; margin-bottom: 2.5rem; line-height: 1.6;">
-                    For secure access, the CRM opens in a dedicated window.
-                </p>
-                <!-- The Button -->
-<button onclick="openCRMModal()" class="btn-launch">Launch CRM</button>
+            <iframe src="resources/CRM_demo.html" frameborder="0" class="embedded-dashboard-iframe" title="Demo CRM"></iframe>
 
-<!-- The Modal Structure -->
-<div id="reportModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3 id="modalReportTitle">...</h3>
-            <button onclick="closeReportModal()">✕</button>
-        </div>
-        <div class="modal-body"> <!-- Add this wrapper -->
-            <iframe id="modalIframe" src="" allowfullscreen></iframe>
-        </div>
-    </div>
-</div>
-            </div>
         </div>
 
         <div id="view-budgeting" class="view-container">
@@ -684,28 +664,7 @@
             if (sidebar.classList.contains('open')) toggleSidebar();
         }
 
-// 1. Define your URL at the top of your script
-const CRM_URL = "https://your-crm-portal-link.com";
 
-// 2. Add the opening function
-function openCRMModal() {
-    const modal = document.getElementById('reportModal');
-    const iframe = document.getElementById('modalIframe');
-    const title = document.getElementById('modalReportTitle');
-
-    title.innerText = "Sales CRM Terminal";
-    iframe.src = CRM_URL; // Set the iframe source to the CRM
-    modal.style.display = 'flex'; // Show the modal
-}
-
-// 3. Ensure the close function clears the iframe
-function closeReportModal() {
-    const modal = document.getElementById('reportModal');
-    const iframe = document.getElementById('modalIframe');
-    
-    modal.style.display = 'none';
-    iframe.src = ""; // This stops the CRM from running in the background
-}
 
         function handleSignOut() {
             localStorage.clear();
