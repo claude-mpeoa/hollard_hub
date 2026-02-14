@@ -587,7 +587,21 @@
                 <p style="color: var(--slate-600); max-width: 450px; margin-bottom: 2.5rem; line-height: 1.6;">
                     For secure access, the CRM opens in a dedicated window.
                 </p>
-                <button onclick="openCRMExternal()" class="btn-launch">Launch CRM</button>
+                <!-- The Button -->
+<button onclick="openCRMModal()" class="btn-launch">Launch CRM</button>
+
+<!-- The Modal Structure -->
+<div id="reportModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="modalReportTitle">...</h3>
+            <button onclick="closeReportModal()">✕</button>
+        </div>
+        <div class="modal-body"> <!-- Add this wrapper -->
+            <iframe id="modalIframe" src="" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
             </div>
         </div>
 
@@ -670,11 +684,28 @@
             if (sidebar.classList.contains('open')) toggleSidebar();
         }
 
-        function openCRMExternal() {
-            const crmUrl = "resources/CRM_demo.html"; <!-- ADD CRM URL Here -->
-            const newWindow = window.open(crmUrl, '_blank');
-            if (!newWindow) alert('Popup Blocked: Please allow popups to open the CRM.');
-        }
+// 1. Define your URL at the top of your script
+const CRM_URL = "https://your-crm-portal-link.com";
+
+// 2. Add the opening function
+function openCRMModal() {
+    const modal = document.getElementById('reportModal');
+    const iframe = document.getElementById('modalIframe');
+    const title = document.getElementById('modalReportTitle');
+
+    title.innerText = "Sales CRM Terminal";
+    iframe.src = CRM_URL; // Set the iframe source to the CRM
+    modal.style.display = 'flex'; // Show the modal
+}
+
+// 3. Ensure the close function clears the iframe
+function closeReportModal() {
+    const modal = document.getElementById('reportModal');
+    const iframe = document.getElementById('modalIframe');
+    
+    modal.style.display = 'none';
+    iframe.src = ""; // This stops the CRM from running in the background
+}
 
         function handleSignOut() {
             localStorage.clear();
@@ -706,6 +737,7 @@
 </body>
 
 </html>
+
 
 
 
